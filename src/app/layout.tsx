@@ -53,9 +53,6 @@ export default function RootLayout({
               >
                 공식 홈페이지
               </a>
-              <Link href="/admin" className="nav-button-admin">
-                글 생성 콘솔 🤖
-              </Link>
             </nav>
           </div>
         </header>
@@ -90,9 +87,6 @@ export default function RootLayout({
                   <a href="http://webarunclinic.co.kr" target="_blank" rel="noopener noreferrer">
                     진료 및 의료진 소개
                   </a>
-                </li>
-                <li>
-                  <Link href="/admin">관리자 로그인 (글 생성기)</Link>
                 </li>
               </ul>
             </div>
