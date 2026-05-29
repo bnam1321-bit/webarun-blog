@@ -110,7 +110,7 @@ export function savePost(slug: string, rawContent: string): boolean {
     return true;
   } catch (error) {
     console.error(`Error saving post (${slug}):`, error);
-    return false;
+    throw error;
   }
 }
 

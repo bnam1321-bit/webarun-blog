@@ -76,6 +76,14 @@ export default function AdminPage() {
   const [targetKeyword, setTargetKeyword] = useState('');
   const [topic, setTopic] = useState('');
   const [extraContext, setExtraContext] = useState('');
+  const [isLocal, setIsLocal] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      setIsLocal(hostname === 'localhost' || hostname === '127.0.0.1');
+    }
+  }, []);
 
   // 생성 프로세스 상태
   const [generating, setGenerating] = useState(false);
@@ -163,10 +171,50 @@ export default function AdminPage() {
     }
   };
 
+  // 마크다운 파일 브라우저 직접 다운로드
+  const handleDownload = () => {
+    if (!postSlug) {
+      alert('생성된 슬러그가 없어 다운로드할 수 없습니다.');
+      return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const frontmatter = `---
+title: "${postTitle}"
+date: "${today}"
+description: "${postDescription}"
+tags: ["${cluster}", "${targetKeyword}"]
+author: "위바른내과의원"
+coverImage: ""
+published: "${today}"
+modified: "${today}"
+targetKeyword: "${targetKeyword}"
+cluster: "${cluster}"
+seoTitle: "${postTitle}"
+metaDescription: "${postDescription}"
+---
+
+${editedContent}
+`;
+
+    const element = document.createElement("a");
+    const file = new Blob([frontmatter], { type: 'text/markdown' });
+    element.href = URL.createObjectURL(file);
+    element.download = `${today}-${postSlug}.md`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
   // 포스트 최종 저장 및 발행 API 호출
   const handleSave = async () => {
     if (!postSlug) {
       alert('생성된 슬러그가 없어 저장할 수 없습니다.');
+      return;
+    }
+
+    if (!isLocal) {
+      alert(`⚠️ 현재 접속 환경은 Vercel 실시간 배포 환경(읽기 전용)입니다.\n\n이 환경에서는 직접 파일 시스템 저장이 제한됩니다. 대신 옆의 '마크다운 다운로드 💾' 버튼을 클릭하여 파일을 다운로드한 뒤, 프로젝트 내 'content/posts/' 폴더에 넣고 GitHub에 커밋/푸시하여 발행해 주세요!`);
       return;
     }
 
@@ -201,14 +249,15 @@ ${editedContent}
       });
 
       if (!res.ok) {
-        throw new Error('포스트 저장 실패');
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || '서버 파일 시스템 쓰기 실패');
       }
 
       alert('🎉 글이 성공적으로 발행되었습니다! 홈 화면으로 이동합니다.');
       router.push('/');
       router.refresh();
     } catch (e: any) {
-      alert(`저장 중 오류 발생: ${e.message}`);
+      alert(`저장 오류: ${e.message}\n\n※ 로컬 작업 공간(localhost:3000)에서 실행 중이 아니라면, 파일 쓰기가 차단된 읽기 전용 환경일 수 있습니다. '마크다운 다운로드 💾' 버튼을 눌러 파일을 받아 로컬 content/posts/ 폴더에 넣고 GitHub에 커밋/푸시하여 반영해 주세요!`);
     }
   };
 
@@ -365,9 +414,30 @@ ${editedContent}
             </div>
 
             {editedContent && (
-              <div className="editor-actions">
-                <button className="btn-save" onClick={handleSave}>
-                  블로그 글 저장 및 발행 🚀
+              <div className="editor-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                {!isLocal && (
+                  <span style={{ fontSize: '0.75rem', color: '#e65100', fontWeight: 'bold', marginRight: '0.5rem', backgroundColor: '#fff3e0', padding: '0.2rem 0.5rem', borderRadius: '4px', border: '1px solid #ffe0b2' }}>
+                    ⚠️ Vercel 배포 환경 (다운로드 권장)
+                  </span>
+                )}
+                <button
+                  className="btn-save"
+                  style={{ 
+                    background: !isLocal ? 'var(--primary)' : 'var(--text-secondary)',
+                    fontWeight: !isLocal ? 'bold' : 'normal',
+                    color: !isLocal ? '#ffffff' : 'inherit'
+                  }}
+                  onClick={handleDownload}
+                >
+                  마크다운 다운로드 💾
+                </button>
+                <button 
+                  className="btn-save" 
+                  onClick={handleSave}
+                  style={!isLocal ? { opacity: 0.5, background: '#888888', cursor: 'not-allowed', textDecoration: 'line-through' } : {}}
+                  title={!isLocal ? "Vercel 배포 환경에서는 서버 저장 기능을 사용할 수 없습니다. 마크다운 다운로드를 사용해 주세요." : "로컬 서버에 마크다운 파일로 직접 저장 및 발행합니다."}
+                >
+                  서버 저장 및 발행 🚀
                 </button>
               </div>
             )}

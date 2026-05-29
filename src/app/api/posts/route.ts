@@ -31,15 +31,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '슬러그와 파일 내용(rawContent)이 필요합니다.' }, { status: 400 });
     }
 
-    const success = savePost(slug, rawContent);
-    if (!success) {
-      return NextResponse.json({ error: '포스트 저장에 실패했습니다.' }, { status: 500 });
+    try {
+      savePost(slug, rawContent);
+      return NextResponse.json({ success: true });
+    } catch (writeError: any) {
+      console.error('Detailed write error:', writeError);
+      return NextResponse.json({ 
+        error: `서버 저장 실패: ${writeError.message || '알 수 없는 파일 시스템 오류'}` 
+      }, { status: 500 });
     }
-
-    return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error saving post:', error);
-    return NextResponse.json({ error: '포스트 저장 중 오류가 발생했습니다.' }, { status: 500 });
+    return NextResponse.json({ error: '요청 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
 
