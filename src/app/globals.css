@@ -351,9 +351,9 @@ body {
 
 /* 직관적인 파스텔 커버 헤더 */
 .card-cover {
-  height: 170px; /* 아이콘을 수납하기 위해 높이를 기존 140px에서 170px로 상향 */
+  height: 170px;
   position: relative;
-  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%); /* 산뜻한 틸 연두 */
+  background: var(--cover-bg, linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%));
   display: flex;
   align-items: center;
   justify-content: center;

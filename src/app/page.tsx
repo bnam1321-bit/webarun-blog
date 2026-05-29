@@ -82,6 +82,24 @@ export default function HomePage() {
     }
   };
 
+  // 컨셉을 해치지 않는 고급 메디컬 파스텔톤 커버 배경 그라디언트
+  const getCoverBackground = (clusterName?: string) => {
+    switch (clusterName) {
+      case '소화기·내시경 클리닉':
+        return 'linear-gradient(135deg, #E6FBF0 0%, #F0FDF4 100%)'; // Soft Teal Green
+      case '건강검진센터':
+        return 'linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 100%)'; // Soft Blue
+      case '영상·검사 클리닉':
+        return 'linear-gradient(135deg, #E0F7FA 0%, #E8F8F9 100%)'; // Soft Cyan
+      case '수액 클리닉(IVNT)':
+        return 'linear-gradient(135deg, #F3E8FF 0%, #F9F5FF 100%)'; // Soft Lavender
+      case '만성질환·일반내과':
+        return 'linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%)'; // Soft Amber/Sand
+      default:
+        return 'linear-gradient(135deg, #F4F4F5 0%, #FAFAFA 100%)'; // Soft Gray
+    }
+  };
+
   // 필터링 적용된 포스트 목록
   const filteredPosts = posts.filter((post) => {
     const matchesCluster =
@@ -210,7 +228,10 @@ export default function HomePage() {
                   key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="blog-card"
-                  style={{ '--bg-glow-color': themeColor } as React.CSSProperties}
+                  style={{ 
+                    '--bg-glow-color': themeColor,
+                    '--cover-bg': getCoverBackground(post.cluster)
+                  } as React.CSSProperties}
                 >
                   {/* 정갈한 파스텔 단색식 헤더 */}
                   <div className="card-cover">
