@@ -23,47 +23,20 @@ const CLUSTERS = [
   { name: '만성질환·일반내과', id: '만성질환·일반내과' },
 ];
 
-function renderCategoryIcon(clusterName?: string) {
+function getClusterEnglish(clusterName?: string) {
   switch (clusterName) {
     case '소화기·내시경 클리닉':
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V3m0 15v3m-3-9h6" />
-        </svg>
-      );
+      return 'GI Endoscopy';
     case '건강검진센터':
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      );
+      return 'Health Checkup';
     case '영상·검사 클리닉':
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h3l3.375-7.5 3.375 15L17.625 9.75h3.375" />
-        </svg>
-      );
+      return 'Imaging & Ultrasound';
     case '수액 클리닉(IVNT)':
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v4m-2-2h4" />
-        </svg>
-      );
+      return 'IV Therapy (IVNT)';
     case '만성질환·일반내과':
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <rect x="7" y="3" width="10" height="18" rx="5" stroke="currentColor" strokeWidth="2.2" fill="none" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M7 12h10" />
-        </svg>
-      );
+      return 'Chronic Care';
     default:
-      return (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
-        </svg>
-      );
+      return 'Webarun Clinic';
   }
 }
 
@@ -244,9 +217,9 @@ export default function HomePage() {
                     <div className="card-cover-pattern"></div>
                     <div className="card-cover-gradient"></div>
                     <div className="card-cover-content">
-                      <div className="card-cover-icon-wrapper">
-                        {renderCategoryIcon(post.cluster)}
-                      </div>
+                      <span className="card-cover-brand-badge">
+                        {getClusterEnglish(post.cluster)}
+                      </span>
                       <h2 className="card-cover-h2">{post.title}</h2>
                     </div>
                   </div>

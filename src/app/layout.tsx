@@ -37,9 +37,12 @@ export default function RootLayout({
         {/* 플로팅 글래스 헤더 */}
         <header className="premium-header">
           <div className="header-container">
-            <Link href="/" className="logo-link">
-              <div className="logo-symbol">위</div>
-              <span>위바른내과의원</span>
+            <Link href="/" className="logo-link" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <img 
+                src="/logo.png" 
+                alt="위바른내과의원 건강검진센터" 
+                style={{ height: '40px', width: 'auto', objectFit: 'contain', display: 'block' }}
+              />
             </Link>
             <nav className="nav-links">
               <Link href="/" className="nav-link">
