@@ -170,11 +170,6 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="detail-category">{post.cluster}</div>
           <h1 className="detail-title">{post.title}</h1>
           <div className="detail-meta-row">
-            <div className="detail-author-badges">
-              <span className="badge-eeat">전문가 작성·감수</span>
-              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>양경호 원장</span>
-              <span style={{ color: 'var(--text-muted)' }}>소화기내과 전문의</span>
-            </div>
             <time>{post.date}</time>
           </div>
         </header>
@@ -208,17 +203,7 @@ export default async function BlogPostPage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
-        {/* 의사 프로필 배지 위젯 (E-E-A-T 신호 강화) */}
-        <div className="author-stamp-widget">
-          <div className="doctor-avatar">🩺</div>
-          <div className="doctor-info">
-            <div className="doctor-name">양경호 대표원장</div>
-            <div className="doctor-title">위바른내과의원 소화기내과 전문의</div>
-            <p className="doctor-bio">
-              위바른내과의원은 풍부한 임상경험을 바탕으로 위·대장 내시경, 대장용종 당일절제술 및 5대암 국가건강검진을 전문적으로 시행합니다. 환자 개개인의 안전을 최우선으로 생각하며 바른 마음으로 정직하게 진료합니다.
-            </p>
-          </div>
-        </div>
+
 
         {/* 경고/주의사항 안내판 */}
         <div style={{ marginTop: '2.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '1.5rem' }}>
