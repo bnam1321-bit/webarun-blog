@@ -129,7 +129,7 @@ export default function HomePage() {
             <span className="ticker-icon">📍</span>
             <div>
               <span className="ticker-label">의원 주소</span>
-              <span className="ticker-val">인천 서구 이음대로 378 로뎀타워 5층 (원당동)</span>
+              <span className="ticker-val">인천 서구 이음대로 378 로뎀타워 5층 (아라동)</span>
             </div>
           </div>
           <div className="ticker-item">

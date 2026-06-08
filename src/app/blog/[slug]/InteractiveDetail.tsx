@@ -88,7 +88,7 @@ export default function InteractiveDetail({ headings, faqs }: InteractiveDetailP
             📞 032-561-5570
           </p>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-            인천 서구 이음대로 378 로뎀타워 5층 (원당동)
+            인천 서구 이음대로 378 로뎀타워 5층 (아라동)
           </p>
           <div style={{ padding: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '10px', fontSize: '0.8rem' }}>
             <span style={{ color: 'var(--primary)', fontWeight: 700 }}>🚗 주차 안내</span>
