@@ -151,7 +151,7 @@ export default function HomePage() {
 
       {/* 3. 카테고리 알약 필터 및 검색창 (직관적인 2열 정렬) */}
       <section className="cluster-nav-container">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+        <div className="cluster-grid-row">
           <div>
             <h3 className="cluster-title">관심 카테고리 선택</h3>
             <div className="cluster-flex-row">
