@@ -38,8 +38,18 @@ Google은 YMYL(의료) 영역을 가장 엄격하게 평가합니다. 아래를 
 # OUTPUT STRUCTURE (반드시 이 순서로)
 출력은 마크다운. 블록명은 출력하지 말고 자연스러운 H1/H2/H3로 녹이세요.
 
-【0】 [META] 블록 (본문 위, 코드펜스로 출력)
-   - seo_title / meta_description / slug / h1 / published / modified / target_keyword / cluster
+【0】 [META] 블록 (본문 맨 위, 반드시 \`\`\`json 으로 시작하는 JSON 코드블록 형식으로만 출력)
+   - 반드시 아래 예시처럼 \`\`\`json 으로 감싸진 순수 JSON 형식으로 출력해야 합니다. (\`\`\` 만 단독으로 쓰는 일반 코드 블록 형식 사용 금지)
+   {
+     "seo_title": "...",
+     "meta_description": "...",
+     "slug": "...",
+     "h1": "...",
+     "published": "...",
+     "modified": "...",
+     "target_keyword": "...",
+     "cluster": "..."
+   }
 
 【1】 H1 제목 — 핵심 질환·검진 + 지역 키워드 1회. 검색 질문형. 스터핑 금지.
 

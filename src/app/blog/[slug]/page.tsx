@@ -98,8 +98,11 @@ export default async function BlogPostPage({ params }: Props) {
     }
   }
 
-  // 본문에서 JSON 코드 블록(상단 메타데이터 및 하단 FAQPage 등)을 완전히 제거하여 독자에게 노출되지 않도록 함
+  // 본문에서 JSON 코드 블록(상단 메타데이터 및 하단 FAQPage 등) 및 [META] 블록을 완전히 제거하여 독자에게 노출되지 않도록 함
   mainContent = mainContent.replace(/```json[\s\S]*?```/gi, '');
+  mainContent = mainContent.replace(/```[\s\S]*?\[META\][\s\S]*?```/gi, '');
+  mainContent = mainContent.replace(/\[META\][\s\S]*?(?=\r?\n# |\r?\n\*\*|$)/gi, '');
+
 
   // 내부링크 제안 추천 텍스트 영역을 본문에서 잘라내어 제거함
   const internalLinkIndex = mainContent.indexOf('[내부링크 제안]');
