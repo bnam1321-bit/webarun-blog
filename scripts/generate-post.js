@@ -240,7 +240,7 @@ function validateOutput(text) {
 
   const charCount = text.replace(/\s/g, "").length;
   if (charCount < 1800) issues.push(`분량 부족 (${charCount}자, 최소 1800)`);
-  if (charCount > 2800) issues.push(`분량 초과 (${charCount}자, 최대 2500 권장)`);
+  if (charCount > 6000) issues.push(`분량 초과 (${charCount}자, 최대 6000 권장)`);
 
   return { passed: issues.length === 0, issues, charCount, brandCount };
 }
@@ -296,7 +296,7 @@ async function run() {
         model: "gemini-2.5-flash", // 빠르고 안정적인 모델 사용
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 8000,
+            maxOutputTokens: 12000,
         }
       });
 

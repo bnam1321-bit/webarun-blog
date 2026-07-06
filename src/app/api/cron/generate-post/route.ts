@@ -67,7 +67,7 @@ export async function GET(request: Request) {
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 8000,
+        maxOutputTokens: 12000,
       },
     });
 

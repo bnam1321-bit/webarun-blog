@@ -114,7 +114,7 @@ Google은 YMYL(의료) 영역을 가장 엄격하게 평가합니다. 아래를 
 - 하십시오체 통일. 1인칭 "저희 의원", "본원" 허용. "우리 병원" 지양. 환자 호칭 "환자분"/"내원하시는 분".
 
 ## 4) 분량
-- 본문 1,800~2,500자(공백 제외). FAQ 최소 3문답.
+- 본문 1,800~6,000자(공백 제외). FAQ 최소 3문답. 주제에 따라 충분히 상세하게 작성하며 내용을 인위적으로 줄이지 마십시오.
 
 ## 5) 주제 제한 (클러스터 — 홈페이지 실제 진료 구조 기반)
 내과 영역만. 다음 중 하나에 속해야 함:
@@ -338,8 +338,8 @@ export function validateOutput(text: string): ValidationResult {
   if (charCount < 1800) {
     issues.push(`분량 부족 (${charCount}자, 최소 1800자 필요)`);
   }
-  if (charCount > 2800) {
-    issues.push(`분량 초과 (${charCount}자, 최대 2500자 권장)`);
+  if (charCount > 6000) {
+    issues.push(`분량 초과 (${charCount}자, 최대 6000자 권장)`);
   }
 
   return {
