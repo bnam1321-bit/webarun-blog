@@ -77,6 +77,18 @@ export async function GET(request: Request) {
     const genResult = await model.generateContent(fullPrompt);
     const content = genResult.response.text();
 
+    // 5-1. 검증 — 불완전 포스트 필터링
+    const { validateOutput } = await import('@/lib/prompts');
+    const validation = validateOutput(content);
+    if (!validation.passed) {
+      console.warn('[Auto-Post] 검증 불통과, 저장하지 않고 종료합니다. 이슈:', validation.issues);
+      return NextResponse.json({
+        success: false,
+        message: '검증 불통과로 포스트를 저장하지 않았습니다.',
+        issues: validation.issues,
+      });
+    }
+
     // 6. 메타데이터 파싱 (slug, h1, meta_description)
     let slug = '';
     const slugMatch = content.match(/slug\s*:\s*([^\n\r]+)/i);

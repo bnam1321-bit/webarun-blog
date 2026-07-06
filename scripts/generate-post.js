@@ -287,16 +287,17 @@ async function run() {
   const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
 
   let content = "";
+  let validationPassed = false;
   const MAX_RETRIES = 3;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       console.log(`🚀 Gemini 모델로 글 작성 시도 중 (${attempt}/${MAX_RETRIES})...`);
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash", // 빠르고 안정적인 모델 사용
+        model: "gemini-2.5-flash",
         generationConfig: {
           temperature: 0.7,
-            maxOutputTokens: 12000,
+          maxOutputTokens: 12000,
         }
       });
 
@@ -304,17 +305,16 @@ async function run() {
       const response = await result.response;
       content = response.text();
       console.log("✨ 생성 완료! 검증을 실시합니다...");
-      
+
       const validation = validateOutput(content);
       if (validation.passed) {
         console.log("✅ 프롬프트 하네스 검증 통과!");
+        validationPassed = true;
         break;
       } else {
         console.warn("⚠️ 검증 불통과, 이슈 항목:");
         validation.issues.forEach(i => console.warn(` - ${i}`));
-        if (attempt === MAX_RETRIES) {
-          console.warn("⚠️ 최대 시도 횟수에 도달하여 현재 버전으로 저장합니다.");
-        }
+        content = ""; // 불완전본 초기화
       }
     } catch (e) {
       console.error(`❌ API 에러 발생: ${e.message}`);
@@ -325,9 +325,9 @@ async function run() {
     }
   }
 
-  if (!content) {
-    console.error("❌ 콘텐츠 생성에 실패했습니다.");
-    process.exit(1);
+  if (!validationPassed || !content) {
+    console.error("❌ 검증을 통과한 콘텐츠 생성에 실패했습니다. 불완전 포스트는 저장하지 않습니다.");
+    process.exit(0); // 에러 없이 종료 (불완전본 미저장)
   }
 
   // META 블록에서 slug 파싱
