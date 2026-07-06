@@ -88,7 +88,7 @@ export default function RootLayout({
                 건강정보 홈
               </Link>
               <a
-                href="https://webarunim.co.kr"
+                href="http://www.webarunclinic.co.kr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-link"
@@ -126,7 +126,7 @@ export default function RootLayout({
               <h5>고객 편의 바로가기</h5>
               <ul className="footer-link-list">
                 <li>
-                  <a href="https://webarunim.co.kr" target="_blank" rel="noopener noreferrer">
+                  <a href="http://www.webarunclinic.co.kr" target="_blank" rel="noopener noreferrer">
                     진료 및 의료진 소개
                   </a>
                 </li>
