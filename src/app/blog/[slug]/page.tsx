@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${post.seoTitle || post.title} | 위바른내과의원`,
     description: post.metaDescription || post.description,
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/blog/${post.slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr'}/blog/${post.slug}`,
     },
     openGraph: {
       title: post.title,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       publishedTime: post.published || post.date,
       modifiedTime: post.modified || post.date,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/blog/${post.slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr'}/blog/${post.slug}`,
       siteName: '위바른내과의원 공식블로그',
       images: [
         {
@@ -140,7 +140,7 @@ export default async function BlogPostPage({ params }: Props) {
       worksFor: {
         '@type': 'MedicalClinic',
         name: '위바른내과의원',
-        url: 'http://webarunclinic.co.kr',
+        url: 'https://webarunim.co.kr',
       },
     },
   };

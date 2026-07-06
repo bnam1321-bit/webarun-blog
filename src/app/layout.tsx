@@ -3,7 +3,11 @@ import './globals.css';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '위바른내과의원 건강 블로그 | 인천 서구 검단 소화기내과',
+  metadataBase: new URL('https://webarunim.co.kr'),
+  title: {
+    default: '위바른내과의원 건강 블로그 | 인천 서구 검단 소화기내과',
+    template: '%s | 위바른내과의원',
+  },
   description:
     '인천 서구 검단신도시 아라동에 위치한 위바른내과의원 공식 건강 블로그입니다. 소화기 전문의가 알려주는 위·대장 내시경, 용종절제술, 6대암 국가검진 및 만성질환 관리 정보.',
   keywords: [
@@ -18,7 +22,42 @@ export const metadata: Metadata = {
     '검단 건강검진',
     '소화기내과 전문의',
   ],
+  alternates: {
+    canonical: 'https://webarunim.co.kr',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ko_KR',
+    url: 'https://webarunim.co.kr',
+    siteName: '위바른내과의원 건강 블로그',
+    title: '위바른내과의원 건강 블로그 | 인천 서구 검단 소화기내과',
+    description:
+      '인천 서구 검단신도시 아라동에 위치한 위바른내과의원 공식 건강 블로그입니다. 소화기 전문의가 알려주는 위·대장 내시경, 용종절제술, 6대암 국가검진 및 만성질환 관리 정보.',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: '위바른내과의원',
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+  },
 };
+
 
 export default function RootLayout({
   children,
@@ -49,7 +88,7 @@ export default function RootLayout({
                 건강정보 홈
               </Link>
               <a
-                href="http://webarunclinic.co.kr"
+                href="https://webarunim.co.kr"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-link"
@@ -87,7 +126,7 @@ export default function RootLayout({
               <h5>고객 편의 바로가기</h5>
               <ul className="footer-link-list">
                 <li>
-                  <a href="http://webarunclinic.co.kr" target="_blank" rel="noopener noreferrer">
+                  <a href="https://webarunim.co.kr" target="_blank" rel="noopener noreferrer">
                     진료 및 의료진 소개
                   </a>
                 </li>
