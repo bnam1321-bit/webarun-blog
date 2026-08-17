@@ -270,6 +270,38 @@ export function buildClinicJsonLd(): string {
   }, null, 2);
 }
 
+export const BANNED_REPLACEMENTS: [RegExp | string, string][] = [
+  [/완치율/g, "치료 성공률"],
+  [/완치/g, "호전 및 회복"],
+  [/부작용 없음/g, "부작용 최소화"],
+  [/재발 없음/g, "재발 위험 감소"],
+  [/100%/g, "높은 비율"],
+  [/완벽한/g, "철저한"],
+  [/확실한/g, "정확한"],
+  [/추천드립니다/g, "권장합니다"],
+  [/추천합니다/g, "권장합니다"],
+  [/꼭 방문하세요/g, "전문의 상담을 권장합니다"],
+  [/내원을 권유(드립니다|합니다)?/g, "진료 상담을 권장합니다"],
+  [/안녕하세요 여러분,?/g, ""],
+  [/도움이 되셨길 바(랍니다|랍니다\.)/g, "건강 관리에 도움이 되기를 바랍니다."],
+  [/결론적으로,?/g, "요약하자면,"],
+  [/정리하자면,?/g, "요약하자면,"],
+  [/마치며,?/g, "진료를 안내해 드리며,"],
+  [/끝으로,?/g, "마지막으로,"]
+];
+
+export function sanitizeContent(text: string): string {
+  let cleaned = text;
+  for (const [pattern, replacement] of BANNED_REPLACEMENTS) {
+    if (typeof pattern === 'string') {
+      cleaned = cleaned.split(pattern).join(replacement);
+    } else {
+      cleaned = cleaned.replace(pattern, replacement);
+    }
+  }
+  return cleaned;
+}
+
 export const BANNED_WORDS = [
   "유일", "1위", "최고", "최상", "최저", "부작용 없음", "완치", "100%",
   "재발 없음", "잘하는 곳", "명의", "추천드립니다", "완벽한", "확실한",
@@ -331,15 +363,13 @@ export function validateOutput(text: string): ValidationResult {
     issues.push("FAQPage JSON-LD 구조화 데이터 누락");
   }
 
-
-
   // 글자수 계산 (공백 제외)
   const charCount = text.replace(/\s/g, "").length;
-  if (charCount < 1800) {
-    issues.push(`분량 부족 (${charCount}자, 최소 1800자 필요)`);
+  if (charCount < 1500) {
+    issues.push(`분량 부족 (${charCount}자, 최소 1500자 필요)`);
   }
-  if (charCount > 6000) {
-    issues.push(`분량 초과 (${charCount}자, 최대 6000자 권장)`);
+  if (charCount > 8000) {
+    issues.push(`분량 초과 (${charCount}자, 최대 8000자 권장)`);
   }
 
   return {

@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { buildUserPrompt, SYSTEM_PROMPT } from '@/lib/prompts';
+import { buildUserPrompt, SYSTEM_PROMPT, validateOutput, sanitizeContent } from '@/lib/prompts';
 import { getNextTopic } from '@/lib/topics';
+
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
 export async function GET(request: Request) {
   try {
@@ -61,7 +64,7 @@ export async function GET(request: Request) {
     const activeTopic = getNextTopic(postCount);
     const { cluster, targetKeyword, topic } = activeTopic;
 
-    // 5. Gemini API를 활용한 건강정보 본문 자동생성
+    // 5. Gemini API를 활용한 건강정보 본문 자동생성 (최대 3회 재시도)
     const genAI = new GoogleGenerativeAI(googleApiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
@@ -74,18 +77,43 @@ export async function GET(request: Request) {
     const userPrompt = buildUserPrompt({ topic, targetKeyword, cluster, extraContext: '' });
     const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
 
-    const genResult = await model.generateContent(fullPrompt);
-    const content = genResult.response.text();
+    let content = '';
+    let validationPassed = false;
+    let lastIssues: string[] = [];
+    const MAX_RETRIES = 3;
 
-    // 5-1. 검증 — 불완전 포스트 필터링
-    const { validateOutput } = await import('@/lib/prompts');
-    const validation = validateOutput(content);
-    if (!validation.passed) {
-      console.warn('[Auto-Post] 검증 불통과, 저장하지 않고 종료합니다. 이슈:', validation.issues);
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        console.log(`[Auto-Post] 글 작성 시도 중 (${attempt}/${MAX_RETRIES})...`);
+        const genResult = await model.generateContent(fullPrompt);
+        let rawContent = genResult.response.text();
+        
+        // 1차 자동 순화 (금지어 및 불필요 상투어 교정)
+        let cleanedContent = sanitizeContent(rawContent);
+
+        // 유효성 검증
+        const validation = validateOutput(cleanedContent);
+        if (validation.passed) {
+          content = cleanedContent;
+          validationPassed = true;
+          console.log('[Auto-Post] 검증 통과!');
+          break;
+        } else {
+          lastIssues = validation.issues;
+          console.warn(`[Auto-Post] 검증 실패 (시도 ${attempt}/${MAX_RETRIES}):`, validation.issues);
+          // 실패 시 다음 루프에서 재시도
+        }
+      } catch (err: any) {
+        console.error(`[Auto-Post] Gemini 호출 에러 (시도 ${attempt}/${MAX_RETRIES}):`, err.message);
+      }
+    }
+
+    if (!validationPassed || !content) {
+      console.warn('[Auto-Post] 최대 재시도 횟수 초과, 검증 불통과로 저장하지 않습니다.', lastIssues);
       return NextResponse.json({
         success: false,
-        message: '검증 불통과로 포스트를 저장하지 않았습니다.',
-        issues: validation.issues,
+        message: '검증 불통과(최대 재시도 초과)로 포스트를 저장하지 않았습니다.',
+        issues: lastIssues,
       });
     }
 
