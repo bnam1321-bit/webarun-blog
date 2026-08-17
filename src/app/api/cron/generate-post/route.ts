@@ -70,7 +70,7 @@ export async function GET(request: Request) {
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 12000,
+        maxOutputTokens: 6000,
       },
     });
 
@@ -80,7 +80,7 @@ export async function GET(request: Request) {
     let content = '';
     let validationPassed = false;
     let lastIssues: string[] = [];
-    const MAX_RETRIES = 3;
+    const MAX_RETRIES = 2;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
