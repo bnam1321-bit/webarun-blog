@@ -7,7 +7,24 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/', '/blog/', '/llms.txt'],
+        disallow: ['/api/', '/admin/'],
+      },
+      {
+        userAgent: [
+          'GPTBot',
+          'OAI-SearchBot',
+          'ChatGPT-User',
+          'Google-Extended',
+          'GoogleOther',
+          'Googlebot',
+          'ClaudeBot',
+          'anthropic-ai',
+          'PerplexityBot',
+          'Yeti',
+          'Bingbot',
+        ],
+        allow: ['/', '/blog/', '/llms.txt'],
         disallow: ['/api/', '/admin/'],
       },
     ],

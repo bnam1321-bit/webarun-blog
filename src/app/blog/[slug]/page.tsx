@@ -9,7 +9,6 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// 빌드 시점에 정적 페이지 생성을 위한 함수
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({
@@ -17,7 +16,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// 동적 SEO 메타데이터 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -28,23 +26,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr';
+  const desc = post.metaDescription || post.description;
+
   return {
     title: `${post.seoTitle || post.title} | 위바른내과의원`,
-    description: post.metaDescription || post.description,
+    description: desc,
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr'}/blog/${post.slug}`,
+      canonical: `${siteUrl}/blog/${post.slug}`,
     },
     openGraph: {
       title: post.title,
-      description: post.description,
+      description: desc,
       type: 'article',
       publishedTime: post.published || post.date,
       modifiedTime: post.modified || post.date,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr'}/blog/${post.slug}`,
-      siteName: '위바른내과의원 공식블로그',
+      url: `${siteUrl}/blog/${post.slug}`,
+      siteName: '위바른내과의원 건강 칼럼',
       images: [
         {
-          url: post.coverImage || '/images/og-default.jpg',
+          url: post.coverImage || '/logo.png',
           width: 1200,
           height: 630,
           alt: post.title,
@@ -64,57 +65,125 @@ export default async function BlogPostPage({ params }: Props) {
 
   const rawContent = post.content;
 
-  // 1. FAQPage JSON-LD 파싱 및 추출 (코드 펜스 내 JSON 추출)
+  // 1. 모든 JSON 코드 펜스를 검사하여 실제 FAQPage JSON-LD만 정확히 추출 ([META] 블록과 혼동 방지)
   let embeddedJsonLd: any = null;
-  const jsonLdMatch = rawContent.match(/```json\s*(\{[\s\S]+?\})\s*```/i);
-  if (jsonLdMatch) {
+  const allJsonBlocks = [...rawContent.matchAll(/```json\s*(\{[\s\S]*?\})\s*```/gi)];
+  for (const match of allJsonBlocks) {
     try {
-      embeddedJsonLd = JSON.parse(jsonLdMatch[1]);
-    } catch (e) {
-      console.error('JSON-LD 파싱 실패:', e);
+      const parsed = JSON.parse(match[1]);
+      if (parsed['@type'] === 'FAQPage' || parsed['@context']) {
+        embeddedJsonLd = parsed;
+        break;
+      }
+    } catch {
+      // 무시하고 다음 블록 확인
     }
   }
 
-  // 2. 자주 묻는 질문(FAQ) 섹션 분리 및 어코디언용 객체 파싱
-  const faqSectionMatch = rawContent.match(/##\s+자주\s+묻는\s+질문[\s\S]+/i);
+  // 2. 본문에서 JSON 코드 블록, [META] 블록, HTML 주석(VALIDATION) 제거
   let mainContent = rawContent;
+  mainContent = mainContent.replace(/```json[\s\S]*?```/gi, '');
+  mainContent = mainContent.replace(/```[\s\S]*?\[META\][\s\S]*?```/gi, '');
+  mainContent = mainContent.replace(/\[META\][\s\S]*?(?=\r?\n# |\r?\n\*\*|$)/gi, '');
+  mainContent = mainContent.replace(/<!--[\s\S]*?-->/g, '');
+
+  // 3. [내부링크 제안] 섹션만 정밀 제거 (뒤따르는 FAQ 섹션이 잘리지 않도록 보호)
+  mainContent = mainContent.replace(
+    /(?:---\s*)?\[내부링크 제안\][\s\S]*?(?=\r?\n---\r?\n|\r?\n#{2,3}\s|$)/gi,
+    ''
+  );
+
+  // 4. 자주 묻는 질문(FAQ) 섹션 파싱 및 본문에서 분리 (## 또는 ### 모두 지원, Q1:/Q./**Q1:** 모두 지원)
+  const faqHeadingRegex = /(?:^|\r?\n)#{2,3}\s*(?:❓\s*)?자주\s*묻는\s*질문[\s\S]*/i;
+  const faqSectionMatch = mainContent.match(faqHeadingRegex);
   const faqs: { question: string; answer: string }[] = [];
 
-  if (faqSectionMatch) {
+  if (faqSectionMatch && faqSectionMatch.index !== undefined) {
     const faqSection = faqSectionMatch[0];
-    // 본문에서는 FAQ 원본 섹션 텍스트를 제거하고 아코디언 컴포넌트로 따로 그림
-    mainContent = rawContent.substring(0, rawContent.indexOf(faqSection));
+    mainContent = mainContent.substring(0, faqSectionMatch.index);
 
-    // Q와 A 목록 매칭
-    const qMatches = faqSection.match(/(?:Q\.|Q:)\s*([^\n\r]+)/gi) || [];
-    const aMatches = faqSection.match(/(?:A\.|A:)\s*([^\n\r]+)/gi) || [];
+    // FAQ 섹션 내부에 '진료 안내 및 주의사항'이 포함되어 있다면 그 이전까지만 FAQ로 파싱
+    const noticeIdx = faqSection.search(/(?:^|\r?\n)#{2,3}\s*(?:💡\s*)?진료\s*안내/i);
+    const pureFaqText = noticeIdx !== -1 ? faqSection.substring(0, noticeIdx) : faqSection;
 
-    for (let i = 0; i < qMatches.length; i++) {
-      const questionText = qMatches[i].replace(/^(?:Q\.|Q:)\s*/i, '').replace(/\*\*|__/g, '').trim();
-      const answerText = aMatches[i] ? aMatches[i].replace(/^(?:A\.|A:)\s*/i, '').replace(/\*\*|__/g, '').trim() : '';
-      if (questionText) {
-        faqs.push({ question: questionText, answer: answerText });
+    const lines = pureFaqText.split(/\r?\n/);
+    let currentQ = '';
+    let currentA = '';
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line || line === '---') continue;
+
+      const qMatch = line.match(/^(?:#{2,4}\s*)?(?:\*\*|__)?Q\d*[\.:]\s*(.+?)(?:\*\*|__)?$/i);
+      const aMatch = line.match(/^(?:\*\*|__)?A\d*[\.:]\s*(.+)$/i);
+
+      if (qMatch) {
+        if (currentQ && currentA) {
+          faqs.push({ question: currentQ, answer: currentA.trim() });
+        }
+        currentQ = qMatch[1].replace(/\*\*|__/g, '').trim();
+        currentA = '';
+      } else if (aMatch) {
+        currentA = aMatch[1].replace(/\*\*|__/g, '').trim();
+      } else if (currentQ && currentA) {
+        // 여러 줄로 이어지는 답변 처리 (단, 진료 안내 문구는 제외)
+        if (!line.startsWith('**위바른내과의원') && !line.startsWith('💡')) {
+          currentA += ' ' + line.replace(/\*\*|__/g, '');
+        }
+      }
+    }
+    if (currentQ && currentA) {
+      faqs.push({ question: currentQ, answer: currentA.trim() });
+    }
+  }
+
+  // 만약 JSON-LD로 파싱된 FAQ는 있는데 마크다운 파싱된 faqs가 비어 있다면 JSON-LD에서 역추출하여 화면에 표시
+  if (faqs.length === 0 && embeddedJsonLd?.mainEntity && Array.isArray(embeddedJsonLd.mainEntity)) {
+    for (const entity of embeddedJsonLd.mainEntity) {
+      if (entity.name && entity.acceptedAnswer?.text) {
+        faqs.push({
+          question: String(entity.name).trim(),
+          answer: String(entity.acceptedAnswer.text).trim(),
+        });
       }
     }
   }
 
-  // 본문에서 JSON 코드 블록(상단 메타데이터 및 하단 FAQPage 등) 및 [META] 블록을 완전히 제거하여 독자에게 노출되지 않도록 함
-  mainContent = mainContent.replace(/```json[\s\S]*?```/gi, '');
-  mainContent = mainContent.replace(/```[\s\S]*?\[META\][\s\S]*?```/gi, '');
-  mainContent = mainContent.replace(/\[META\][\s\S]*?(?=\r?\n# |\r?\n\*\*|$)/gi, '');
-
-
-  // 내부링크 제안 추천 텍스트 영역을 본문에서 잘라내어 제거함
-  const internalLinkIndex = mainContent.indexOf('[내부링크 제안]');
-  if (internalLinkIndex !== -1) {
-    mainContent = mainContent.substring(0, internalLinkIndex);
+  // 반대로 faqs는 있는데 embeddedJsonLd가 없다면 자동으로 FAQPage JSON-LD 생성
+  if (!embeddedJsonLd && faqs.length > 0) {
+    embeddedJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer,
+        },
+      })),
+    };
   }
 
-  // 3. 본문 중 이미지 가이드 마크다운 텍스트를 완전히 제거 (GEO용 텍스트 집중을 위해 이미지 레이아웃 제외)
+  // 5. 하단 중복 '진료 안내 및 주의사항' 섹션 제거 (하단 고정 안내 카드와 중복 노출 방지)
+  mainContent = mainContent.replace(
+    /(?:---\s*)?(?:#{2,3}\s*(?:💡\s*)?진료\s*안내\s*및\s*주의사항|\*\*위바른내과의원\s*진료\s*안내\*\*|💡\s*\*\*진료\s*안내\s*및\s*주의사항\*\*)[\s\S]*$/i,
+    ''
+  );
+
+  // 6. 상단 중복 H1 타이틀 또는 볼드 타이틀 줄 제거 (아티클 헤더의 H1과 중복 방지)
+  mainContent = mainContent.trimStart();
+  mainContent = mainContent.replace(/^#\s+[^\r\n]+\r?\n+/, '');
+  if (mainContent.startsWith(`**${post.title}**`)) {
+    mainContent = mainContent.replace(`**${post.title}**`, '').trimStart();
+  }
+
+  // 7. 이미지 가이드 플레이스홀더 제거
   const imageGuideRegex = /\[이미지:\s*(.*?)\s*\/\s*alt="(.*?)"\s*\/\s*filename="(.*?)"\]/g;
   mainContent = mainContent.replace(imageGuideRegex, '');
+  mainContent = mainContent.replace(/\r?\n---\s*$/g, '').trim();
 
-  // 4. 본문 헤딩(H2/H3) 목록 추출 (TOC 생성용)
+  // 8. 본문 헤딩(H2/H3) 목록 추출 (목차 생성용)
   const headingLines = mainContent.split('\n');
   const headings = headingLines
     .filter((line) => line.startsWith('## ') || line.startsWith('### '))
@@ -125,29 +194,55 @@ export default async function BlogPostPage({ params }: Props) {
       return { text, id, isH3 };
     });
 
-  // 5. 기본 BlogPosting 구조화 데이터 구성
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr';
+
+  // 9. MedicalWebPage + BlogPosting 구조화 데이터 구성 (검색엔진 및 AI 봇 최적화)
   const blogPostingJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': ['BlogPosting', 'MedicalWebPage'],
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}/blog/${post.slug}`,
+    },
     headline: post.title,
-    description: post.description,
+    description: post.metaDescription || post.description,
     datePublished: post.published || post.date,
     dateModified: post.modified || post.date,
+    inLanguage: 'ko-KR',
+    keywords: post.tags?.join(', ') || post.targetKeyword,
     author: {
       '@type': 'Physician',
       name: '양경호',
+      jobTitle: '대표원장 (소화기내과 전문의)',
       medicalSpecialty: 'Gastroenterology',
       worksFor: {
         '@type': 'MedicalClinic',
         name: '위바른내과의원',
-        url: 'https://webarunim.co.kr',
+        url: siteUrl,
+        telephone: '+82-32-561-5570',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '인천광역시 서구 이음대로 378 로뎀타워 5층 (아라동)',
+          addressLocality: '서구',
+          addressRegion: '인천광역시',
+          addressCountry: 'KR',
+        },
+      },
+    },
+    publisher: {
+      '@type': 'MedicalClinic',
+      name: '위바른내과의원',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
       },
     },
   };
 
   return (
     <div className="detail-container">
-      {/* 구글 검색 크롤러용 구조화 데이터 삽입 */}
+      {/* 검색엔진 및 AI 봇(ChatGPT, Gemini 등)용 JSON-LD 구조화 데이터 */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
@@ -161,32 +256,52 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* 왼쪽 메인 본문 영역 */}
       <article className="detail-main">
-        {/* 뒤로가기 버튼 */}
         <div style={{ marginBottom: '2rem' }}>
-          <Link href="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            ← 건강정보 목록으로 돌아가기
+          <Link
+            href="/"
+            style={{
+              color: 'var(--text-secondary)',
+              textDecoration: 'none',
+              fontSize: '0.9rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+            }}
+          >
+            ← 전체 칼럼 목록으로
           </Link>
         </div>
 
-        {/* 아티클 헤더 */}
         <header className="detail-header">
           <div className="detail-category">{post.cluster}</div>
           <h1 className="detail-title">{post.title}</h1>
           <div className="detail-meta-row">
-            <time>{post.date}</time>
+            <time dateTime={post.date}>{post.date}</time>
+            <span>위바른내과의원 건강 칼럼</span>
           </div>
         </header>
 
-        {/* 요약본 / 리드문 (TL;DR) */}
+        {/* 핵심 요약 리드문 */}
         {post.description && (
           <div style={{ marginBottom: '2.5rem' }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--text-primary)', background: 'rgba(16, 185, 129, 0.05)', borderLeft: '4px solid var(--primary)', padding: '1.25rem 1.75rem', borderRadius: '0 16px 16px 0', lineHeight: '1.7', fontWeight: 500 }}>
+            <p
+              style={{
+                fontSize: '1.08rem',
+                color: 'var(--text-primary)',
+                background: 'rgba(13, 148, 136, 0.05)',
+                borderLeft: '4px solid var(--primary)',
+                padding: '1.25rem 1.5rem',
+                borderRadius: '0 12px 12px 0',
+                lineHeight: '1.7',
+                fontWeight: 500,
+              }}
+            >
               {post.description}
             </p>
           </div>
         )}
 
-        {/* 마크다운 랜더러 본문 */}
+        {/* 마크다운 본문 */}
         <div className="markdown-body">
           <ReactMarkdown
             components={{
@@ -206,20 +321,49 @@ export default async function BlogPostPage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
-
-
-        {/* 경고/주의사항 안내판 */}
-        <div style={{ marginTop: '2.5rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '1.5rem' }}>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
-            💡 진료 안내 및 주의사항
+        {/* 진료 안내 및 주의사항 박스 */}
+        <div
+          style={{
+            marginTop: '2.5rem',
+            background: '#F8FAFC',
+            border: '1px solid var(--border-color)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+          }}
+        >
+          <p
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontWeight: 700,
+              color: 'var(--primary)',
+              marginBottom: '0.5rem',
+              fontSize: '0.95rem',
+            }}
+          >
+            💡 위바른내과의원 진료 안내 및 주의사항
           </p>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-            본 게시물은 의료법 제56조 1항을 준수하여 의료 정보 제공 목적으로 작성되었습니다. 제공된 의학 정보는 환자의 상태 및 체질에 따라 진료 결과가 다를 수 있으며, 부작용이 발생할 수 있으므로 검사·시술 전 반드시 전문의와 충분한 상담을 진행하시기 바랍니다.
+          <p
+            style={{
+              fontSize: '0.85rem',
+              color: 'var(--text-secondary)',
+              lineHeight: '1.6',
+              marginBottom: '0.5rem',
+            }}
+          >
+            <strong>위치:</strong> 인천광역시 서구 이음대로 378 로뎀타워 5층 (아라동) |{' '}
+            <strong>문의:</strong> 032-561-5570
+            <br />
+            <strong>진료시간:</strong> 평일 08:30~18:30 / 토요일 08:30~13:00 (토요일 점심시간 없음 / 일·공휴일 휴진)
+          </p>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+            본 글은 의료법 제56조 제1항을 준수하여 환자분들께 올바른 건강 정보를 제공하기 위해 작성되었습니다. 개인의 증상과 건강 상태에 따라 필요한 검사나 치료 방법이 달라질 수 있으므로, 정확한 진단은 내원하시어 전문의와 상담하시기 바랍니다.
           </p>
         </div>
       </article>
 
-      {/* 오른쪽 사이드바 (TOC 및 예약 위젯) + 하단 FAQs (클라이언트 공유 컴포넌트) */}
+      {/* 오른쪽 사이드바 (목차 및 진료 문의) + 하단 FAQ */}
       <InteractiveDetail headings={headings} faqs={faqs} />
     </div>
   );

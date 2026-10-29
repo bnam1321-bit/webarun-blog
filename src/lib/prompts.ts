@@ -358,9 +358,11 @@ export function validateOutput(text: string): ValidationResult {
     issues.push("[META] 블록 누락");
   }
 
-  // FAQPage JSON-LD 검사
+  // FAQPage JSON-LD 검사 (시작 및 닫힘 무결성 확인)
   if (!/FAQPage/.test(text)) {
     issues.push("FAQPage JSON-LD 구조화 데이터 누락");
+  } else if (!/FAQPage[\s\S]*?\}\s*\]\s*\}\s*```/.test(text)) {
+    issues.push("FAQPage JSON-LD 블록이 중간에 잘렸습니다 (불완전 생성)");
   }
 
   // 글자수 계산 (공백 제외)

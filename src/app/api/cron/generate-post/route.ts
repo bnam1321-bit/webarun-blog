@@ -70,7 +70,7 @@ export async function GET(request: Request) {
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 6000,
+        maxOutputTokens: 10000,
       },
     });
 
@@ -117,11 +117,11 @@ export async function GET(request: Request) {
       });
     }
 
-    // 6. 메타데이터 파싱 (slug, h1, meta_description)
+    // 6. 메타데이터 파싱 (slug, h1, seo_title, meta_description)
     let slug = '';
-    const slugMatch = content.match(/slug\s*:\s*([^\n\r]+)/i);
+    const slugMatch = content.match(/"?slug"?\s*:\s*"?([^",\n\r]+)"?/i);
     if (slugMatch) {
-      slug = slugMatch[1].trim().replace(/['"]/g, '');
+      slug = slugMatch[1].trim().replace(/['",]/g, '');
     } else {
       slug = Math.random().toString(36).substring(7);
     }
@@ -129,15 +129,21 @@ export async function GET(request: Request) {
     slug = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
     let h1 = topic;
-    const h1Match = content.match(/h1\s*:\s*([^\n\r]+)/i);
+    const h1Match = content.match(/"?h1"?\s*:\s*"?([^"\n\r]+)"?/i);
     if (h1Match) {
-      h1 = h1Match[1].trim().replace(/['"]/g, '');
+      h1 = h1Match[1].trim().replace(/['",]+$/g, '').replace(/^['"]+/g, '');
+    }
+
+    let seoTitle = h1;
+    const seoTitleMatch = content.match(/"?seo_title"?\s*:\s*"?([^"\n\r]+)"?/i);
+    if (seoTitleMatch) {
+      seoTitle = seoTitleMatch[1].trim().replace(/['",]+$/g, '').replace(/^['"]+/g, '');
     }
 
     let description = '';
-    const descMatch = content.match(/meta_description\s*:\s*([^\n\r]+)/i);
+    const descMatch = content.match(/"?meta_description"?\s*:\s*"?([^"\n\r]+)"?/i);
     if (descMatch) {
-      description = descMatch[1].trim().replace(/['"]/g, '');
+      description = descMatch[1].trim().replace(/['",]+$/g, '').replace(/^['"]+/g, '');
     }
 
     // 7. frontmatter 조립
@@ -153,7 +159,7 @@ published: "${today}"
 modified: "${today}"
 targetKeyword: "${targetKeyword}"
 cluster: "${cluster}"
-seoTitle: "${h1}"
+seoTitle: "${seoTitle}"
 metaDescription: "${description}"
 ---
 

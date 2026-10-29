@@ -365,24 +365,31 @@ async function run() {
 
   // META 블록에서 slug 파싱
   let slug = "";
-  const slugMatch = content.match(/slug\s*:\s*([^\n\r]+)/i);
+  const slugMatch = content.match(/"?slug"?\s*:\s*"?([^",\n\r]+)"?/i);
   if (slugMatch) {
-    slug = slugMatch[1].trim().replace(/['"]/g, "");
+    slug = slugMatch[1].trim().replace(/['",]/g, "");
   } else {
     slug = Math.random().toString(36).substring(7);
   }
+  slug = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 
   // META 블록 정보 추출
   let title = topic;
-  const h1Match = content.match(/h1\s*:\s*([^\n\r]+)/i);
+  const h1Match = content.match(/"?h1"?\s*:\s*"?([^"\n\r]+)"?/i);
   if (h1Match) {
-    title = h1Match[1].trim().replace(/['"]/g, "");
+    title = h1Match[1].trim().replace(/['",]+$/g, "").replace(/^['"]+/g, "");
+  }
+
+  let seoTitle = title;
+  const seoTitleMatch = content.match(/"?seo_title"?\s*:\s*"?([^"\n\r]+)"?/i);
+  if (seoTitleMatch) {
+    seoTitle = seoTitleMatch[1].trim().replace(/['",]+$/g, "").replace(/^['"]+/g, "");
   }
 
   let description = "";
-  const descMatch = content.match(/meta_description\s*:\s*([^\n\r]+)/i);
+  const descMatch = content.match(/"?meta_description"?\s*:\s*"?([^"\n\r]+)"?/i);
   if (descMatch) {
-    description = descMatch[1].trim().replace(/['"]/g, "");
+    description = descMatch[1].trim().replace(/['",]+$/g, "").replace(/^['"]+/g, "");
   }
 
   const today = new Date().toISOString().split('T')[0];
@@ -400,6 +407,8 @@ published: "${today}"
 modified: "${today}"
 targetKeyword: "${targetKeyword}"
 cluster: "${cluster}"
+seoTitle: "${seoTitle}"
+metaDescription: "${description}"
 ---
 
 ${content}
