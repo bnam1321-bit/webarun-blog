@@ -83,9 +83,12 @@ export default async function BlogPostPage({ params }: Props) {
   // 2. 본문에서 JSON 코드 블록, [META] 블록, HTML 주석(VALIDATION) 제거
   let mainContent = rawContent;
   mainContent = mainContent.replace(/```json[\s\S]*?```/gi, '');
+  mainContent = mainContent.replace(/```json[\s\S]*$/gi, '');
+  mainContent = mainContent.replace(/\[FAQPage JSON-LD\]/gi, '');
   mainContent = mainContent.replace(/```[\s\S]*?\[META\][\s\S]*?```/gi, '');
   mainContent = mainContent.replace(/\[META\][\s\S]*?(?=\r?\n# |\r?\n\*\*|$)/gi, '');
   mainContent = mainContent.replace(/<!--[\s\S]*?-->/g, '');
+  mainContent = mainContent.replace(/<!--[\s\S]*$/g, '');
 
   // 3. [내부링크 제안] 섹션만 정밀 제거 (뒤따르는 FAQ 섹션이 잘리지 않도록 보호)
   mainContent = mainContent.replace(
