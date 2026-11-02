@@ -227,6 +227,11 @@ const BANNED_REPLACEMENTS = [
 
 function sanitizeContent(text) {
   let cleaned = text;
+  cleaned = cleaned.replace(
+    /(```(?:json)?\s*\{\s*"seo_title"[\s\S]*?"cluster"\s*:\s*"[^"\r\n]*"\s*\})\s*\r?\n(?!\s*```)/i,
+    "$1\n```\n\n"
+  );
+  cleaned = cleaned.replace(/<!--\s*\[?VALIDATION[\s\S]*?(?:-->|$)/gi, "").trim();
   for (const [pattern, replacement] of BANNED_REPLACEMENTS) {
     if (typeof pattern === 'string') {
       cleaned = cleaned.split(pattern).join(replacement);

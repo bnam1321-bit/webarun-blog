@@ -65,25 +65,35 @@ export default async function BlogPostPage({ params }: Props) {
 
   const rawContent = post.content;
 
-  // 1. 모든 JSON 코드 펜스를 검사하여 실제 FAQPage JSON-LD만 정확히 추출 ([META] 블록과 혼동 방지)
+  // 1. FAQPage JSON-LD만 안전하게 추출 ([META] 블록의 닫는 백틱이 빠져 있어도 본문을 건드리지 않도록 @context/@type 기준 추출)
   let embeddedJsonLd: any = null;
-  const allJsonBlocks = [...rawContent.matchAll(/```json\s*(\{[\s\S]*?\})\s*```/gi)];
-  for (const match of allJsonBlocks) {
+  const faqJsonMatch = rawContent.match(/\{\s*"@context"\s*:\s*"https?:\/\/schema\.org"[\s\S]*?"@type"\s*:\s*"FAQPage"[\s\S]*?\}\s*\]\s*\}/i);
+  if (faqJsonMatch) {
     try {
-      const parsed = JSON.parse(match[1]);
-      if (parsed['@type'] === 'FAQPage' || parsed['@context']) {
-        embeddedJsonLd = parsed;
-        break;
-      }
+      embeddedJsonLd = JSON.parse(faqJsonMatch[0]);
     } catch {
-      // 무시하고 다음 블록 확인
+      // 파싱 실패 시 아래 faqs 배열에서 자동 생성됨
     }
   }
 
-  // 2. 본문에서 JSON 코드 블록, [META] 블록, HTML 주석(VALIDATION) 제거
+  // 2. 본문에서 [META] JSON 블록, FAQPage JSON-LD 블록, HTML 주석(VALIDATION) 안전 제거
+  // 주의: 닫는 ``` 백틱이 누락된 경우에도 본문(# 헤딩 이후)이 통째로 삭제되지 않도록 구조 기반으로 정밀 제거
   let mainContent = rawContent;
-  mainContent = mainContent.replace(/```json[\s\S]*?```/gi, '');
-  mainContent = mainContent.replace(/```json[\s\S]*$/gi, '');
+
+  // 2-1. 상단 [META] JSON 블록 제거 (닫는 ``` 유무와 무관하게 첫 JSON 객체 } 까지만 제거)
+  mainContent = mainContent.replace(
+    /^\s*(?:```(?:json)?\s*)?\{\s*"seo_title"[\s\S]*?\}\s*(?:```)?/i,
+    ''
+  );
+
+  // 2-2. 하단 FAQPage JSON-LD 블록 제거 (닫는 ``` 유무와 무관하게 제거)
+  mainContent = mainContent.replace(
+    /(?:\[FAQPage JSON-LD\]\s*)?(?:```(?:json)?\s*)?\{\s*"@context"\s*:\s*"https?:\/\/schema\.org"[\s\S]*?(?:```|$)/gi,
+    ''
+  );
+
+  // 2-3. 그 외 마크다운 헤딩(#)을 포함하지 않는 순수 JSON 코드 블록 및 메타 태그/주석 정리
+  mainContent = mainContent.replace(/```json\s*\{[^#]*?\}\s*```/gi, '');
   mainContent = mainContent.replace(/\[FAQPage JSON-LD\]/gi, '');
   mainContent = mainContent.replace(/```[\s\S]*?\[META\][\s\S]*?```/gi, '');
   mainContent = mainContent.replace(/\[META\][\s\S]*?(?=\r?\n# |\r?\n\*\*|$)/gi, '');
@@ -97,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
   );
 
   // 4. 자주 묻는 질문(FAQ) 섹션 파싱 및 본문에서 분리 (## 또는 ### 모두 지원, Q1:/Q./**Q1:** 모두 지원)
-  const faqHeadingRegex = /(?:^|\r?\n)#{2,3}\s*(?:❓\s*)?자주\s*묻는\s*질문[\s\S]*/i;
+  const faqHeadingRegex = /(?:^|\r?\n)#{2,3}\s*(?:❓\s*)?[^\r\n]*?자주\s*묻는\s*질문[\s\S]*/i;
   const faqSectionMatch = mainContent.match(faqHeadingRegex);
   const faqs: { question: string; answer: string }[] = [];
 
@@ -106,7 +116,9 @@ export default async function BlogPostPage({ params }: Props) {
     mainContent = mainContent.substring(0, faqSectionMatch.index);
 
     // FAQ 섹션 내부에 '진료 안내 및 주의사항'이 포함되어 있다면 그 이전까지만 FAQ로 파싱
-    const noticeIdx = faqSection.search(/(?:^|\r?\n)#{2,3}\s*(?:💡\s*)?진료\s*안내/i);
+    const noticeIdx = faqSection.search(
+      /(?:^|\r?\n)(?:#{2,3}\s*(?:💡\s*)?진료\s*안내|\*\*위바른내과의원\s*진료\s*안내|\*\*진료\s*안내\s*및\s*주의사항|>?\s*💡\s*\*\*진료\s*안내)/i
+    );
     const pureFaqText = noticeIdx !== -1 ? faqSection.substring(0, noticeIdx) : faqSection;
 
     const lines = pureFaqText.split(/\r?\n/);
@@ -118,7 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
       if (!line || line === '---') continue;
 
       const qMatch = line.match(/^(?:#{2,4}\s*)?(?:\*\*|__)?Q\d*[\.:]\s*(.+?)(?:\*\*|__)?$/i);
-      const aMatch = line.match(/^(?:\*\*|__)?A\d*[\.:]\s*(.+)$/i);
+      const aMatch = line.match(/^(?:\*\*|__)?A\d*(?:\*\*|__)?[\.:]\s*(.+)$/i);
 
       if (qMatch) {
         if (currentQ && currentA) {
@@ -128,9 +140,11 @@ export default async function BlogPostPage({ params }: Props) {
         currentA = '';
       } else if (aMatch) {
         currentA = aMatch[1].replace(/\*\*|__/g, '').trim();
+      } else if (currentQ && !currentA && !line.startsWith('#')) {
+        // Q 다음 줄에 'A:' 접두어 없이 바로 답변이 시작되는 경우 지원
+        currentA = line.replace(/\*\*|__/g, '').trim();
       } else if (currentQ && currentA) {
-        // 여러 줄로 이어지는 답변 처리 (단, 진료 안내 문구는 제외)
-        if (!line.startsWith('**위바른내과의원') && !line.startsWith('💡')) {
+        if (!line.startsWith('**위바른내과의원') && !line.startsWith('💡') && !line.startsWith('> 💡')) {
           currentA += ' ' + line.replace(/\*\*|__/g, '');
         }
       }
@@ -170,7 +184,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   // 5. 하단 중복 '진료 안내 및 주의사항' 섹션 제거 (하단 고정 안내 카드와 중복 노출 방지)
   mainContent = mainContent.replace(
-    /(?:---\s*)?(?:#{2,3}\s*(?:💡\s*)?진료\s*안내\s*및\s*주의사항|\*\*위바른내과의원\s*진료\s*안내\*\*|💡\s*\*\*진료\s*안내\s*및\s*주의사항\*\*)[\s\S]*$/i,
+    /(?:---\s*)?(?:#{2,3}\s*(?:💡\s*)?진료\s*안내\s*및\s*주의사항|\*\*위바른내과의원\s*진료\s*안내\*\*|\*\*진료\s*안내\s*및\s*주의사항\*\*|>?\s*💡\s*\*\*진료\s*안내\s*및\s*주의사항\*\*)[\s\S]*$/i,
     ''
   );
 

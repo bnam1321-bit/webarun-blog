@@ -272,7 +272,12 @@ export function buildClinicJsonLd(): string {
 
 export const BANNED_REPLACEMENTS: [RegExp | string, string][] = [
   [/완치율/g, "치료 성공률"],
-  [/완치/g, "호전 및 회복"],
+  [/완치될/g, "재발 없이 회복될"],
+  [/완치되는/g, "온전히 회복되는"],
+  [/완치가/g, "충분한 호전이"],
+  [/완치는/g, "단기간의 완전한 회복은"],
+  [/완치보다는/g, "단기간의 치료보다는"],
+  [/완치/g, "치료 및 호전"],
   [/부작용 없음/g, "부작용 최소화"],
   [/재발 없음/g, "재발 위험 감소"],
   [/100%/g, "높은 비율"],
@@ -292,8 +297,19 @@ export const BANNED_REPLACEMENTS: [RegExp | string, string][] = [
 
 export function sanitizeContent(text: string): string {
   let cleaned = text;
+
+  // 1. 상단 [META] JSON 블록의 닫는 ``` 백틱이 누락된 경우 자동 복구
+  cleaned = cleaned.replace(
+    /(```(?:json)?\s*\{\s*"seo_title"[\s\S]*?"cluster"\s*:\s*"[^"\r\n]*"\s*\})\s*\r?\n(?!\s*```)/i,
+    "$1\n```\n\n"
+  );
+
+  // 2. 하단 VALIDATION 주석 블록 사전 제거
+  cleaned = cleaned.replace(/<!--\s*\[?VALIDATION[\s\S]*?(?:-->|$)/gi, "").trim();
+
+  // 3. 금지어 및 상투어 문맥 치환
   for (const [pattern, replacement] of BANNED_REPLACEMENTS) {
-    if (typeof pattern === 'string') {
+    if (typeof pattern === "string") {
       cleaned = cleaned.split(pattern).join(replacement);
     } else {
       cleaned = cleaned.replace(pattern, replacement);
