@@ -182,6 +182,15 @@ export default function RootLayout({
               <Link href="/" className="nav-link">
                 건강 칼럼 홈
               </Link>
+              <Link href="/health-checkup" className="nav-link">
+                건강검진 안내
+              </Link>
+              <Link href="/colonoscopy" className="nav-link">
+                검단 대장·위내시경
+              </Link>
+              <Link href="/digestive-clinic" className="nav-link">
+                역류성식도염·소화기
+              </Link>
               <a
                 href="http://www.webarunclinic.co.kr"
                 target="_blank"
@@ -218,15 +227,21 @@ export default function RootLayout({
             </div>
 
             <div className="footer-links">
-              <h5>바로가기</h5>
+              <h5>주요 진료 및 바로가기</h5>
               <ul className="footer-link-list">
+                <li>
+                  <Link href="/health-checkup">국가건강검진·6대암·종합검진 안내</Link>
+                </li>
+                <li>
+                  <Link href="/colonoscopy">검단 대장·위내시경 클리닉 (당일 용종절제)</Link>
+                </li>
+                <li>
+                  <Link href="/digestive-clinic">역류성식도염·속쓰림·소화불량·위염·헬리코박터</Link>
+                </li>
                 <li>
                   <a href="http://www.webarunclinic.co.kr" target="_blank" rel="noopener noreferrer">
                     진료 및 의료진 소개 (공식 홈페이지)
                   </a>
-                </li>
-                <li>
-                  <Link href="/">전체 건강 칼럼 보기</Link>
                 </li>
               </ul>
             </div>

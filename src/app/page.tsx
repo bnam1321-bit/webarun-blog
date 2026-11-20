@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { getAllPosts } from '@/lib/blog';
 import BlogListClient, { PostSummary } from '@/components/BlogListClient';
 
@@ -263,6 +264,40 @@ export default function HomePage() {
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          {/* 3대 핵심 클리닉 전용 안내 페이지 바로가기 */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.75rem',
+              flexWrap: 'wrap',
+              marginTop: '1.25rem',
+              paddingTop: '1.1rem',
+              borderTop: '1px solid var(--border-color)',
+            }}
+          >
+            <Link
+              href="/health-checkup"
+              className="cluster-btn active"
+              style={{ textDecoration: 'none', fontWeight: 700 }}
+            >
+              🏥 국가건강검진·6대암·종합검진 상세 안내 →
+            </Link>
+            <Link
+              href="/colonoscopy"
+              className="cluster-btn"
+              style={{ textDecoration: 'none', fontWeight: 700, borderColor: 'var(--primary)', color: 'var(--primary)' }}
+            >
+              🔬 검단 대장·위내시경 클리닉 (당일 용종절제·CO₂ 송기) →
+            </Link>
+            <Link
+              href="/digestive-clinic"
+              className="cluster-btn"
+              style={{ textDecoration: 'none', fontWeight: 700 }}
+            >
+              🩺 역류성식도염·속쓰림·소화불량·위염·헬리코박터 클리닉 →
+            </Link>
           </div>
         </div>
       </section>
