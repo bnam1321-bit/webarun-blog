@@ -107,7 +107,7 @@ export default function InteractiveDetail({ headings, faqs }: InteractiveDetailP
               lineHeight: 1.5,
             }}
           >
-            인천 서구 이음대로 378 로뎀타워 5층 (아라동)
+            인천 검단구 이음대로 378 로뎀타워 5층 (아라동)
           </p>
           <div
             style={{

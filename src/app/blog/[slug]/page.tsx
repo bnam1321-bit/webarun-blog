@@ -259,8 +259,8 @@ export default async function BlogPostPage({ params }: Props) {
         telephone: '+82-32-561-5570',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: '인천광역시 서구 이음대로 378 로뎀타워 5층 (아라동)',
-          addressLocality: '서구',
+          streetAddress: '인천광역시 검단구 이음대로 378 로뎀타워 5층 (아라동)',
+          addressLocality: '검단구',
           addressRegion: '인천광역시',
           addressCountry: 'KR',
         },
@@ -389,7 +389,7 @@ export default async function BlogPostPage({ params }: Props) {
               marginBottom: '0.5rem',
             }}
           >
-            <strong>위치:</strong> 인천광역시 서구 이음대로 378 로뎀타워 5층 (아라동) |{' '}
+            <strong>위치:</strong> 인천광역시 검단구 이음대로 378 로뎀타워 5층 (아라동) |{' '}
             <strong>문의:</strong> 032-561-5570
             <br />
             <strong>진료시간:</strong> 평일 08:30~18:30 / 토요일 08:30~13:00 (토요일 점심시간 없음 / 일·공휴일 휴진)

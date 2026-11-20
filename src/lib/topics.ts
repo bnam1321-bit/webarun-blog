@@ -34,7 +34,7 @@ export const TOPIC_POOL: TopicItem[] = [
   },
   { 
     cluster: '소화기·내시경 클리닉', 
-    targetKeyword: '헬리코박터 검사 인천 서구', 
+    targetKeyword: '헬리코박터 검사 인천 검단구', 
     topic: '헬리코박터균 검사 주기와 제균 치료 부작용 예방' 
   },
   
@@ -73,7 +73,7 @@ export const TOPIC_POOL: TopicItem[] = [
   },
   { 
     cluster: '영상·검사 클리닉', 
-    targetKeyword: '지방간 검사 인천 서구', 
+    targetKeyword: '지방간 검사 인천 검단구', 
     topic: '지방간 원인과 정밀 진단 복부초음파 검사 필요성' 
   },
   { 
@@ -90,7 +90,7 @@ export const TOPIC_POOL: TopicItem[] = [
   },
   { 
     cluster: '수액 클리닉(IVNT)', 
-    targetKeyword: '인천 서구 수액', 
+    targetKeyword: '인천 검단구 수액', 
     topic: '탈수 증상 해결을 위한 아미노산 수분 보충 수액 주의사항' 
   },
   
