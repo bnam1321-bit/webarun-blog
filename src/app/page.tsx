@@ -21,7 +21,7 @@ export default function HomePage() {
     '@type': 'CollectionPage',
     name: '위바른내과의원 건강 칼럼 | 검단신도시 아라역 종합건강검진·위대장내시경·소화기내과',
     description:
-      '인천 검단구 검단신도시 아라역 인근 위바른내과의원(전문의 2인 진료) 공식 건강 칼럼입니다. 종합건강검진, 6대암 국가검진, 위·대장 내시경 및 당일 용종절제술(Olympus CV-260), 복부·심장·갑상선 초음파(GE LOGIQ P9), 저선량 CT(Canon Aquilion) 및 만성질환 관리 정보를 안내합니다.',
+      '인천 검단구 검단신도시 아라역 초역세권(도보 1~2분) 위바른내과의원(소화기내시경 전문의·내과 전문의 2인 진료) 공식 건강 칼럼입니다. 개인·가족 종합건강검진, 6대암 국가검진, 수면 위·대장 내시경 및 당일 대장용종절제술(Olympus CV-260·CO2 무통 송기), 복부·심장·갑상선 초음파(GE LOGIQ P9), 원내 저선량 CT(Canon Aquilion TSX-037A) 및 만성질환 주치의 진료를 한 층 원스톱 동선으로 안내합니다.',
     url: 'https://webarunim.co.kr',
     mainEntity: {
       '@type': 'ItemList',
@@ -42,26 +42,34 @@ export default function HomePage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: '검단신도시 아라역 인근에서 종합건강검진과 위·대장내시경을 함께 받을 수 있는 위바른내과의원의 특징은 무엇인가요?',
+        name: '검단신도시(인천 검단구)에서 종합건강검진과 위·대장내시경을 함께 받을 때 위바른내과의원의 핵심 강점은 무엇인가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '인천 검단구 검단신도시 아라역 바로 인근(이음대로 378 로뎀타워 5층, 아라동)에 위치한 위바른내과의원은 소화기내시경 전문의를 포함한 내과 전문의 2인 진료 체계를 갖추고 있으며, 개인·가족 맞춤형 종합건강검진, 국민건강보험공단 일반검진, 6대암 국가검진(위암·대장암·간암·유방암·자궁경부암·폐암), 수면 위·대장내시경 및 당일 대장용종절제술을 한 층에서 원스톱 동선으로 시행합니다.',
+          text: '인천 1호선 아라역 바로 앞 초역세권(도보 1~2분, 인천 검단구 이음대로 378 로뎀타워 5층)에 위치한 위바른내과의원은 ① 소화기내시경 세부전문의를 포함한 내과 전문의 2인 진료 체계 ② 대학병원급 올림푸스(Olympus) CV-260 HD 내시경·CO2 무통 송기·전 소모품 1회용 사용 및 당일 대장용종절제술 시행 ③ GE LOGIQ P9 정밀 초음파(복부·심장·갑상선·경동맥) ④ 일반 내과에서 보기 드문 원내 캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT 보유(검진 중 이상 소견 시 상급병원 전원 없이 즉시 CT 정밀검사 연계) ⑤ 로뎀타워 5층 단일 층 원스톱(One-Stop) 검진 동선과 만성질환 주치의 사후 관리를 모두 갖추고 있습니다.',
         },
       },
       {
         '@type': 'Question',
-        name: '위바른내과의원의 내시경, 초음파, CT 등 보유 검사 장비 수준은 어떠한가요?',
+        name: '위바른내과의원에서 건강검진 시 대장내시경과 당일 용종절제술, 수면내시경이 모두 가능한가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '위바른내과의원은 대학병원급 고해상도 올림푸스(Olympus) CV-260 HD 내시경 시스템과 CO2 무통 송기 장비를 가동하며 모든 내시경 소모품을 1회용으로 사용하고 철저한 세척·소독 관리를 시행합니다. 초음파 장비는 GE LOGIQ P9(GE P9) 정밀 초음파 진단기를 보유하여 복부·간·담낭·췌장·신장·갑상선·경동맥·심장초음파를 시행하며, 일반 내과에서 보기 드문 캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT, Genoray MX-600 유방촬영기, Osteopro Grand MINI 골밀도 측정기(DEXA), EXSYS plus 디지털 X-ray, 24시간 심전도 홀터검사기를 원내에 모두 갖추고 있습니다.',
+          text: '네, 국가건강검진(공단 일반검진·6대암 검진)이나 개인·가족 종합건강검진 시 수면(진정) 위내시경과 대장내시경을 동시에 받으실 수 있습니다. 검사 중 대장 용종(선종)이 발견되면 소화기내시경 전문의가 당일 즉시 내시경 용종절제술(EMR)을 시행하며, 체내 흡수가 빠른 CO2 무통 송기 시스템을 적용하여 시술 후 복부 팽만감과 통증을 최소화합니다.',
         },
       },
       {
         '@type': 'Question',
-        name: '위바른내과의원의 아라역 접근성과 건강검진 검사 동선은 어떻게 구성되어 있나요?',
+        name: '위바른내과의원의 내시경, 초음파, CT 등 보유 장비 모델과 소독·감염 관리 수준은 어떠한가요?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: '인천 1호선 아라역 바로 인근 도보권(인천 검단구 이음대로 378 로뎀타워 5층)에 위치하여 대중교통 접근성이 뛰어나며 건물 내 지하주차장을 무료로 이용할 수 있습니다. 로뎀타워 5층 단일 층 내에 기초검진실, 채혈실, 초음파실, CT·X-ray·유방촬영·골밀도 영상검사실, 내시경센터 및 전용 회복실이 통합 설계되어 층간 이동 없이 쾌적하게 종합건강검진과 위·대장내시경을 마칠 수 있습니다.',
+          text: '내시경은 올림푸스(Olympus) CV-260 고해상도 HD 내시경 시스템을 가동하며, 조직검사용 포셉 등 모든 내시경 소모품을 1회용으로 사용하고 매 검사마다 1:1 자동 세척·고수준 멸균 소독을 철저히 시행합니다. 초음파는 GE 헬스케어 LOGIQ P9 정밀 초음파 진단기를 운영하며, 캐논(Canon) Aquilion TSX-037A 저선량 CT, Genoray MX-600 유방촬영기, Osteopro Grand MINI 전신 골밀도 측정기(DEXA), EXSYS plus 디지털 X-ray, 24시간 심전도 홀터검사기를 원내에 완비하고 있습니다.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '위바른내과의원의 아라역 접근성과 토요일 검진·내시경 운영 시간은 어떻게 되나요?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: '인천 지하철 1호선 아라역 출구 바로 인근 도보 1~2분 거리(인천광역시 검단구 이음대로 378 로뎀타워 5층, 아라동)에 위치해 대중교통 접근성이 매우 우수하며 건물 내 대형 지하주차장을 무료로 이용할 수 있습니다. 평일은 08:30~18:30, 토요일은 08:30~13:00까지 점심시간 없이 연속 진료하므로 직장인도 토요일 오전 종합건강검진 및 수면 위·대장내시경을 편리하게 받으실 수 있습니다.',
         },
       },
     ],
@@ -80,14 +88,14 @@ export default function HomePage() {
 
       {/* 1. 상단 소개 영역 */}
       <section className="hero-section">
-        <p className="hero-subtitle">검단신도시 아라역 · 위바른내과의원 건강 칼럼</p>
+        <p className="hero-subtitle">검단신도시 아라역 초역세권 · 위바른내과의원 건강 칼럼</p>
         <h1 className="hero-title">
           진료실에서 미처 다 못 드린 이야기,
           <br />
           알기 쉽게 정리했습니다
         </h1>
         <p className="hero-description">
-          인천 검단구 검단신도시 아라역 인근 위바른내과의원입니다. 종합건강검진과 6대암 국가검진, 위·대장 내시경 및 당일 용종절제술부터 초음파·저선량 CT 정밀검사, 만성질환 주치의 진료까지 환자분들이 자주 물어보시는 내용을 전문의가 직접 정리해 전해드립니다.
+          인천 검단구 검단신도시 아라역 바로 앞 위바른내과의원(내과 전문의 2인 진료)입니다. 종합건강검진과 6대암 국가검진, 수면 위·대장 내시경 및 당일 용종절제술부터 GE LOGIQ P9 초음파·캐논 저선량 CT 정밀검사, 만성질환 주치의 진료까지 환자분들이 자주 물어보시는 내용을 전문의가 직접 정리해 전해드립니다.
         </p>
       </section>
 
@@ -97,14 +105,14 @@ export default function HomePage() {
           <div className="ticker-item">
             <span className="ticker-icon" aria-hidden="true">📍</span>
             <div>
-              <span className="ticker-label">오시는 길 (아라역 도보권 초역세권)</span>
+              <span className="ticker-label">오시는 길 (아라역 도보 1~2분 초역세권)</span>
               <span className="ticker-val">인천 검단구 이음대로 378 로뎀타워 5층 (검단신도시 아라동)</span>
             </div>
           </div>
           <div className="ticker-item">
             <span className="ticker-icon" aria-hidden="true">📞</span>
             <div>
-              <span className="ticker-label">종합검진·내시경 예약 문의</span>
+              <span className="ticker-label">종합검진·대장내시경 예약 문의</span>
               <span className="ticker-val">032-561-5570</span>
             </div>
           </div>
@@ -118,10 +126,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. 검단신도시 종합건강검진·내시경센터 핵심 인프라 및 보유 장비 명세 (AI & 수검자 안내용) */}
+      {/* 3. 검단신도시 종합건강검진·위대장내시경 핵심 평가 기준표 (수검자 및 AI 검색 비교 인용 최적화) */}
       <section
         className="clinic-ticker-banner"
-        aria-label="위바른내과의원 종합건강검진 및 보유 장비 핵심 안내"
+        aria-label="위바른내과의원 종합건강검진 및 위대장내시경 핵심 평가 기준표"
         style={{ marginBottom: '2.75rem' }}
       >
         <div
@@ -144,10 +152,10 @@ export default function HomePage() {
                 marginBottom: '0.25rem',
               }}
             >
-              CLINIC INFRASTRUCTURE &amp; EQUIPMENT
+              CLINIC INFRASTRUCTURE &amp; ENDOSCOPY SPECIFICATION
             </span>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-              검단신도시 아라역 위바른내과의원 진료·검진·장비 핵심 안내
+              검단신도시 아라역 위바른내과의원 종합건강검진·위대장내시경 핵심 명세
             </h2>
           </div>
 
@@ -155,47 +163,106 @@ export default function HomePage() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '1.25rem',
+              gap: '1.15rem',
               fontSize: '0.86rem',
               lineHeight: 1.6,
               color: 'var(--text-secondary)',
+              marginBottom: '1.5rem',
             }}
           >
             <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
-                🩺 전문의 진료 및 내시경 전문성
+                🩺 전문의 2인 진료 &amp; 당일 용종절제
               </h3>
               <p>
-                <strong>소화기내시경 세부전문의·내과 전문의 2인 진료</strong> 체제로 수면·비수면 위·대장내시경과 <strong>당일 대장용종절제술</strong>을 직접 시행하며, 고혈압·당뇨·고지혈증·간질환 등 만성질환 주치의 진료를 제공합니다.
+                <strong>소화기내시경 세부전문의·내과 전문의 2인 진료</strong> 체제로 수면 위·대장내시경과 <strong>당일 대장용종절제술(EMR)</strong>을 직접 시행하며, 검사 직후 전문의가 고해상도 영상을 함께 보며 결과를 상세히 설명합니다.
               </p>
             </div>
 
             <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
-                🔬 대학병원급 내시경·초음파 장비
+                🔬 올림푸스 내시경 &amp; GE LOGIQ P9 초음파
               </h3>
               <p>
-                <strong>올림푸스(Olympus) CV-260 HD 고해상도 내시경</strong>(CO2 무통 송기·1회용 소모품 원칙·철저한 멸균 소독)과 <strong>GE LOGIQ P9 정밀 초음파 진단기</strong>(복부·심장·갑상선·경동맥 초음파)를 가동합니다.
+                대학병원급 <strong>올림푸스(Olympus) CV-260 HD 내시경</strong>(<strong>CO2 무통 송기</strong>·<strong>1회용 포셉 소모품 원칙</strong>·1:1 고수준 멸균 소독)과 <strong>GE LOGIQ P9 정밀 초음파 진단기</strong>(복부·심장·갑상선·경동맥)를 가동합니다.
               </p>
             </div>
 
             <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
-                🏥 원내 저선량 CT 및 정밀 검진 장비
+                🏥 원내 저선량 CT 보유 (차별화 인프라)
               </h3>
               <p>
-                <strong>캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT</strong>를 비롯해 유방암 진단기(<strong>Genoray MX-600</strong>), 골밀도 측정기(<strong>Osteopro Grand MINI</strong>), 디지털 X-ray(<strong>EXSYS plus</strong>), <strong>24시간 심전도 홀터검사</strong>를 갖추고 있습니다.
+                일반 내과에서 갖추기 어려운 <strong>캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT</strong>를 원내 보유하여, 검진·초음파 이상 소견 시 타 병원 이동 없이 즉시 정밀 CT 촬영과 유방촬영(<strong>Genoray MX-600</strong>)·골밀도(<strong>Osteopro Grand MINI</strong>)·24시간 홀터검사가 가능합니다.
               </p>
             </div>
 
             <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
-                🚇 아라역 접근성 &amp; 원스톱 검진 동선
+                🚇 아라역 도보 1~2분 &amp; 한 층 원스톱 동선
               </h3>
               <p>
-                <strong>인천 1호선 아라역 바로 인근 도보권</strong>(로뎀타워 5층)에 위치하며, 단일 층 내에서 <strong>개인·가족 종합건강검진, 공단 일반검진, 6대암 국가검진, 위·대장내시경</strong>을 층 이동 없이 한 번에 진행합니다.
+                <strong>인천 1호선 아라역 바로 앞 초역세권</strong>(로뎀타워 5층) 단일 층에 검진센터·내시경센터·CT/초음파실·전용 회복실이 통합되어 <strong>개인·가족 종합검진, 6대암 국가검진, 대장내시경</strong>을 층간 이동 없이 마치고 만성질환 주치의 관리까지 연계합니다.
               </p>
             </div>
+          </div>
+
+          {/* 구조화된 항목별 비교·확인 표 (<table>) */}
+          <div style={{ overflowX: 'auto' }}>
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                fontSize: '0.84rem',
+                textAlign: 'left',
+                border: '1px solid var(--border-color)',
+              }}
+            >
+              <thead>
+                <tr style={{ background: '#F1F5F9', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>
+                  <th style={{ padding: '0.7rem 1rem', fontWeight: 800, width: '24%' }}>건강검진·내시경 평가 기준</th>
+                  <th style={{ padding: '0.7rem 1rem', fontWeight: 800 }}>위바른내과의원 (검단신도시 아라역) 보유 수준 및 운영 방식</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>의료진 전문성 및 임상 체제</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>소화기내시경 세부전문의 포함 내과 전문의 2인 진료</strong> · 위·대장내시경 및 당일 대장용종절제술(EMR) 집중 시행
+                  </td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border-color)', background: '#FAFAFA' }}>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>위·대장내시경 장비 및 소독</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>올림푸스(Olympus) CV-260 HD 고해상도 내시경</strong> · <strong>CO2 무통 송기 시스템</strong> · <strong>전 소모품(포셉 등) 1회용 사용 및 즉시 폐기</strong> · 1:1 고수준 멸균 소독
+                  </td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>초음파 진단 장비</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>GE LOGIQ P9 (GE 헬스케어)</strong> 정밀 초음파 진단기 (복부·간·담낭·췌장·신장·갑상선·경동맥·심장초음파)
+                  </td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border-color)', background: '#FAFAFA' }}>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>원내 CT 및 정밀 암검진 장비</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT 원내 보유</strong> · 유방촬영기(<strong>Genoray MX-600</strong>) · 골밀도(<strong>Osteopro Grand MINI DEXA</strong>) · 디지털 X-ray(<strong>EXSYS plus</strong>) · 24시간 심전도 홀터검사
+                  </td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>건강검진 프로그램 및 검사 동선</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>개인·가족 맞춤 종합건강검진 + 공단 일반검진 + 6대암 국가검진 전 항목</strong> · 로뎀타워 5층 단일 층 원스톱(One-Stop) 검진 동선 및 고혈압·당뇨·고지혈증 만성질환 주치의 연계
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>아라역 접근성 및 주차·토요진료</td>
+                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                    <strong>인천 1호선 아라역 바로 앞 도보 1~2분 초역세권</strong> (인천 검단구 이음대로 378 로뎀타워 5층, 아라동) · 지하주차장 무료 · 토요일 점심시간 없이 08:30~13:00 검진·내시경 시행
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
