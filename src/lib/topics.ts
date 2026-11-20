@@ -5,6 +5,17 @@ export interface TopicItem {
 }
 
 export const TOPIC_POOL: TopicItem[] = [
+  // 건강검진센터 & 종합검진·아라역 대표 주제
+  {
+    cluster: '건강검진센터',
+    targetKeyword: '검단신도시 종합건강검진',
+    topic: '검단신도시 아라역 종합건강검진 위·대장내시경 병원 선택 기준과 원스톱 검사 동선',
+  },
+  {
+    cluster: '소화기·내시경 클리닉',
+    targetKeyword: '아라역 내과 위대장내시경',
+    topic: '검단신도시 아라역 위·대장내시경 동시 검사 장점과 올림푸스 내시경·CO2 송기 시스템',
+  },
   // 소화기·내시경 클리닉
   { 
     cluster: '소화기·내시경 클리닉', 
@@ -48,7 +59,12 @@ export const TOPIC_POOL: TopicItem[] = [
   { 
     cluster: '영상·검사 클리닉', 
     targetKeyword: '검단 복부초음파', 
-    topic: '오른쪽 옆구리 통증 원인 진단을 위한 복부 초음파 검사' 
+    topic: '오른쪽 옆구리 통증 원인 진단을 위한 GE LOGIQ P9 복부 초음파 검사' 
+  },
+  {
+    cluster: '영상·검사 클리닉',
+    targetKeyword: '검단신도시 저선량 CT',
+    topic: '검단신도시 내과 저선량 흉부 CT 폐암검진 및 초음파 정밀 진단 가이드',
   },
   { 
     cluster: '영상·검사 클리닉', 
