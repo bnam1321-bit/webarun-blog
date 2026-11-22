@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '검단 건강검진 안내 | 국가건강검진·6대암검진·종합검진 지정기관 (인천 검단구 아라역 위바른내과의원)',
+  title: '검단 건강검진 안내 | 국가건강검진·6대암검진·종합검진 지정기관 (인천 검단구 아라역)',
   description:
     '인천 검단구 검단신도시 아라역 초역세권 위바른내과의원은 국민건강보험공단 국가건강검진 및 6대암 검진 지정 의료기관입니다. 검사 항목, 예약 방법, 금식 준비사항, 소요시간, 수면 위·대장내시경 동시 검진 및 원스톱 검사 동선을 안내합니다.',
   alternates: {

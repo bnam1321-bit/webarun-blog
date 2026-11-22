@@ -28,9 +28,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://webarunim.co.kr';
   const desc = post.metaDescription || post.description;
+  const cleanTitle = (post.seoTitle || post.title).replace(/\s*[|｜:]\s*위바른내과(?:의원)?\s*$/, '').trim();
 
   return {
-    title: `${post.seoTitle || post.title} | 위바른내과의원`,
+    title: cleanTitle,
     description: desc,
     alternates: {
       canonical: `${siteUrl}/blog/${post.slug}`,
