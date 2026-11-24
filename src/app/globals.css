@@ -833,7 +833,7 @@ body {
 
 .faq-item.open .faq-answer {
   padding: 0.85rem 1.25rem;
-  max-height: 400px;
+  max-height: 2000px;
   border-top: 1px solid var(--border-color);
 }
 
@@ -1207,35 +1207,225 @@ body {
   align-items: flex-end;
 }
 
+/* 메인 페이지 인프라 & 스펙 카드 반응형 컴포넌트 */
+.infra-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.infra-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.infra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.15rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.infra-item {
+  background: #F8FAFC;
+  padding: 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.infra-item-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.responsive-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+.responsive-spec-table thead tr {
+  background: #F1F5F9;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.responsive-spec-table th {
+  padding: 0.7rem 1rem;
+  font-weight: 800;
+}
+
+.responsive-spec-table .spec-th-label {
+  width: 24%;
+}
+
+.responsive-spec-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.responsive-spec-table tbody tr.alt-row {
+  background: #FAFAFA;
+}
+
+.responsive-spec-table .spec-td-label {
+  padding: 0.65rem 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  word-break: keep-all;
+}
+
+.responsive-spec-table .spec-td-val {
+  padding: 0.65rem 1rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* 클리닉 전용 안내 페이지 바로가기 버튼 그룹 */
+.clinic-quick-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.clinic-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.clinic-quick-btn.primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  border: 1px solid var(--primary);
+}
+
+.clinic-quick-btn.primary:hover {
+  background: var(--primary-hover);
+}
+
+.clinic-quick-btn.outline {
+  background: var(--bg-surface);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.clinic-quick-btn.outline:hover {
+  background: rgba(13, 148, 136, 0.06);
+}
+
+.clinic-quick-btn.default {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.clinic-quick-btn.default:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 그리드 아이템 가로 넘침(Overflow) 원천 방지 */
+.detail-main,
+.detail-sidebar,
+.blog-card-wrapper,
+.blog-card {
+  min-width: 0;
+}
+
+.sidebar-contact-widget {
+  position: sticky;
+  top: 360px;
+}
+
 @media (max-width: 1024px) {
   .cluster-grid-row {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
+  /* 태블릿/모바일에서는 본문 아래로 밀려난 데스크톱용 목차 위젯을 숨기고 진료문의 카드만 깔끔하게 노출 */
+  .sidebar-toc-widget {
+    display: none;
+  }
+
+  .sidebar-contact-widget {
+    position: static;
+  }
 }
 
 @media (max-width: 768px) {
-  /* 글로벌 헤더 반응형 */
+  /* 글로벌 헤더 반응형: 로고(상단) + 가로 스크롤 메뉴바(하단) 2단 배치로 5개 메뉴 찌그러짐 완벽 해결 */
   .header-container {
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
   }
   
   .logo-link img {
-    height: 32px !important;
+    height: 30px !important;
   }
 
   .nav-links {
-    gap: 0.6rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.4rem;
+    padding-bottom: 0.15rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.5rem;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-link {
+    white-space: nowrap;
+    flex-shrink: 0;
     font-size: 0.78rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.65rem;
+    background: #F8FAFC;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
   }
 
   /* 메인 영웅 배너 */
   .hero-section {
-    margin: 2rem auto 1.5rem auto;
+    margin: 1.5rem auto 1.25rem auto;
     padding: 0 1rem;
   }
 
@@ -1244,30 +1434,32 @@ body {
   }
 
   .hero-title {
-    font-size: 1.6rem;
+    font-size: 1.45rem;
     line-height: 1.35;
+    word-break: keep-all;
   }
 
   .hero-description {
     font-size: 0.85rem;
+    word-break: keep-all;
   }
 
   /* NAP 티커 배너 */
   .clinic-ticker-banner {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem !important;
     padding: 0 1rem;
   }
 
   .ticker-card {
     padding: 1rem;
     gap: 0.85rem;
-    grid-template-columns: 1fr; /* 1열 세로 정렬 */
+    grid-template-columns: 1fr;
   }
 
   .ticker-item {
     border-bottom: 1px dashed var(--border-color);
     padding-bottom: 0.75rem;
-    gap: 0.5rem;
+    gap: 0.65rem;
   }
 
   .ticker-item:last-child {
@@ -1277,6 +1469,68 @@ body {
 
   .ticker-val {
     font-size: 0.82rem;
+    word-break: keep-all;
+  }
+
+  /* 인프라 & 스펙 카드 모바일 최적화 */
+  .infra-card {
+    padding: 1.15rem 1rem;
+  }
+
+  .infra-title {
+    font-size: 1.05rem;
+  }
+
+  .infra-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .infra-item {
+    padding: 0.9rem;
+  }
+
+  /* 모바일에서 2열 스펙 테이블을 보기 편한 상하 블록형 카드 리스트로 자동 전환 */
+  .responsive-spec-table,
+  .responsive-spec-table tbody,
+  .responsive-spec-table tr,
+  .responsive-spec-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-spec-table thead {
+    display: none;
+  }
+
+  .responsive-spec-table tbody tr {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .responsive-spec-table .spec-td-label {
+    padding: 0 0 0.3rem 0;
+    font-size: 0.8rem;
+    color: var(--primary);
+  }
+
+  .responsive-spec-table .spec-td-val {
+    padding: 0;
+    font-size: 0.82rem;
+  }
+
+  /* 클리닉 바로가기 버튼 모바일 전체 너비 정렬 */
+  .clinic-quick-links {
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .clinic-quick-btn {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.65rem 0.9rem;
+    white-space: normal;
   }
 
   /* 카테고리 스와이프 필터 칩 */
@@ -1288,7 +1542,7 @@ body {
   .cluster-flex-row {
     flex-wrap: nowrap;
     overflow-x: auto;
-    padding-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
     border-bottom: none;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -1301,8 +1555,9 @@ body {
 
   .cluster-btn {
     white-space: nowrap;
-    padding: 0.35rem 0.8rem;
-    font-size: 0.75rem;
+    flex-shrink: 0;
+    padding: 0.38rem 0.85rem;
+    font-size: 0.76rem;
   }
 
   /* 검색창 */
@@ -1312,12 +1567,14 @@ body {
   
   .search-input-editorial {
     font-size: 0.82rem;
-    padding: 0.45rem;
+    padding: 0.55rem 0.75rem;
+    min-width: 0;
   }
 
   .search-btn-editorial {
-    padding: 0 0.85rem;
+    padding: 0 0.95rem;
     font-size: 0.82rem;
+    flex-shrink: 0;
   }
 
   /* 포스트 그리드 및 카드 */
@@ -1328,20 +1585,21 @@ body {
 
   .blog-grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1.15rem;
   }
 
   .blog-card {
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
   .card-cover {
-    height: 130px;
-    padding: 1rem;
+    height: auto;
+    min-height: 120px;
+    padding: 1.1rem 1rem;
   }
 
   .card-cover-h2 {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
   }
 
   .card-body {
@@ -1349,55 +1607,80 @@ body {
   }
 
   .card-description {
-    font-size: 0.78rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin-bottom: 0.85rem;
   }
 
-  /* 포스트 상세 */
+  /* 포스트 및 클리닉 상세 */
   .detail-container {
     padding: 0 1rem;
-    margin-top: 1.5rem;
-    gap: 1.5rem;
+    margin-top: 1.25rem;
+    margin-bottom: 3rem;
+    gap: 1.25rem;
   }
 
   .detail-main {
-    padding: 1.5rem 1rem;
-    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    border-radius: 10px;
   }
 
   .detail-title {
-    font-size: 1.4rem;
-    line-height: 1.35;
+    font-size: 1.3rem;
+    line-height: 1.38;
+    word-break: keep-all;
   }
 
-  .detail-meta {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.75rem;
-    padding-bottom: 1rem;
+  .detail-meta-row {
+    font-size: 0.76rem;
+    gap: 0.4rem;
   }
 
   .markdown-body {
-    font-size: 0.88rem;
-    line-height: 1.65;
+    font-size: 0.92rem;
+    line-height: 1.7;
   }
 
   .markdown-body h2 {
-    font-size: 1.2rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.65rem;
+    font-size: 1.15rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    word-break: keep-all;
   }
 
   .markdown-body h3 {
-    font-size: 1.05rem;
-    margin-top: 1.25rem;
+    font-size: 1.02rem;
+    margin-top: 1.35rem;
     margin-bottom: 0.5rem;
+    word-break: keep-all;
+  }
+
+  .markdown-body table {
+    font-size: 0.78rem !important;
+    min-width: 520px;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    padding: 0.55rem 0.65rem !important;
+  }
+
+  .faq-question {
+    padding: 0.8rem 1rem;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    gap: 0.5rem;
+  }
+
+  .faq-item.open .faq-answer {
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
   }
 
   /* 푸터 */
   .premium-footer {
-    padding: 2rem 1rem 1.25rem 1rem;
+    padding: 2rem 1rem 1.5rem 1rem;
   }
 
   .footer-container {

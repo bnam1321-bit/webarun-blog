@@ -281,12 +281,14 @@ export default function ColonoscopyPage() {
             <br />
             <strong>진료·내시경 시간:</strong> 평일 08:30~18:30 (점심 13:00~14:00) / 토요일 08:30~13:00 (점심시간 없이 연속 진료) / 일·공휴일 휴진 / 건물 내 지하주차장 무료 지원
           </p>
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-            <Link href="/health-checkup" className="cluster-btn active" style={{ textDecoration: 'none' }}>
-              국가건강검진·종합검진 안내 보기 →
+          <div className="clinic-quick-links" style={{ borderTop: 'none', paddingTop: 0 }}>
+            <Link href="/health-checkup" className="clinic-quick-btn primary">
+              <span>🏥 국가건강검진·종합검진 안내 보기</span>
+              <span>→</span>
             </Link>
-            <Link href="/digestive-clinic" className="cluster-btn" style={{ textDecoration: 'none' }}>
-              역류성식도염·속쓰림·위염·헬리코박터 진료 안내 →
+            <Link href="/digestive-clinic" className="clinic-quick-btn default">
+              <span>🩺 역류성식도염·속쓰림·위염·헬리코박터 진료 안내</span>
+              <span>→</span>
             </Link>
           </div>
         </div>

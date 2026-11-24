@@ -359,6 +359,9 @@ export default async function BlogPostPage({ params }: Props) {
           </ReactMarkdown>
         </div>
 
+        {/* 본문 하단 자주 묻는 질문 (FAQ) */}
+        <InteractiveDetail headings={headings} faqs={faqs} mode="faq" />
+
         {/* 진료 안내 및 주의사항 박스 */}
         <div
           style={{
@@ -401,8 +404,8 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
       </article>
 
-      {/* 오른쪽 사이드바 (목차 및 진료 문의) + 하단 FAQ */}
-      <InteractiveDetail headings={headings} faqs={faqs} />
+      {/* 오른쪽 사이드바 (목차 및 진료 문의) */}
+      <InteractiveDetail headings={headings} faqs={faqs} mode="sidebar" />
     </div>
   );
 }

@@ -133,15 +133,7 @@ export default function HomePage() {
         aria-label="위바른내과의원 종합건강검진 및 위대장내시경 핵심 평가 기준표"
         style={{ marginBottom: '2.75rem' }}
       >
-        <div
-          style={{
-            background: 'var(--bg-surface)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '12px',
-            padding: '1.75rem 2rem',
-            boxShadow: 'var(--shadow-card)',
-          }}
-        >
+        <div className="infra-card">
           <div style={{ marginBottom: '1.25rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem' }}>
             <span
               style={{
@@ -155,24 +147,14 @@ export default function HomePage() {
             >
               CLINIC INFRASTRUCTURE &amp; ENDOSCOPY SPECIFICATION
             </span>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+            <h2 className="infra-title">
               검단신도시 아라역 위바른내과의원 종합건강검진·위대장내시경 핵심 명세
             </h2>
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '1.15rem',
-              fontSize: '0.86rem',
-              lineHeight: 1.6,
-              color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
-            }}
-          >
-            <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+          <div className="infra-grid">
+            <div className="infra-item">
+              <h3 className="infra-item-title">
                 🩺 전문의 2인 진료 &amp; 당일 용종절제
               </h3>
               <p>
@@ -180,8 +162,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+            <div className="infra-item">
+              <h3 className="infra-item-title">
                 🔬 올림푸스 내시경 &amp; GE LOGIQ P9 초음파
               </h3>
               <p>
@@ -189,8 +171,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+            <div className="infra-item">
+              <h3 className="infra-item-title">
                 🏥 원내 저선량 CT 보유 (차별화 인프라)
               </h3>
               <p>
@@ -198,8 +180,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div style={{ background: '#F8FAFC', padding: '1.1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+            <div className="infra-item">
+              <h3 className="infra-item-title">
                 🚇 아라역 도보 1~2분 &amp; 한 층 원스톱 동선
               </h3>
               <p>
@@ -209,56 +191,48 @@ export default function HomePage() {
           </div>
 
           {/* 구조화된 항목별 비교·확인 표 (<table>) */}
-          <div style={{ overflowX: 'auto' }}>
-            <table
-              style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                fontSize: '0.84rem',
-                textAlign: 'left',
-                border: '1px solid var(--border-color)',
-              }}
-            >
+          <div className="responsive-table-wrap">
+            <table className="responsive-spec-table">
               <thead>
-                <tr style={{ background: '#F1F5F9', color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>
-                  <th style={{ padding: '0.7rem 1rem', fontWeight: 800, width: '24%' }}>건강검진·내시경 평가 기준</th>
-                  <th style={{ padding: '0.7rem 1rem', fontWeight: 800 }}>위바른내과의원 (검단신도시 아라역) 보유 수준 및 운영 방식</th>
+                <tr>
+                  <th className="spec-th-label">건강검진·내시경 평가 기준</th>
+                  <th className="spec-th-val">위바른내과의원 (검단신도시 아라역) 보유 수준 및 운영 방식</th>
                 </tr>
               </thead>
               <tbody>
-                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>의료진 전문성 및 임상 체제</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                <tr>
+                  <td className="spec-td-label">의료진 전문성 및 임상 체제</td>
+                  <td className="spec-td-val">
                     <strong>소화기내시경 세부전문의 포함 내과 전문의 2인 진료</strong> · 위·대장내시경 및 당일 대장용종절제술(EMR) 집중 시행
                   </td>
                 </tr>
-                <tr style={{ borderBottom: '1px solid var(--border-color)', background: '#FAFAFA' }}>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>위·대장내시경 장비 및 소독</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                <tr className="alt-row">
+                  <td className="spec-td-label">위·대장내시경 장비 및 소독</td>
+                  <td className="spec-td-val">
                     <strong>올림푸스(Olympus) CV-260 HD 고해상도 내시경</strong> · <strong>CO2 무통 송기 시스템</strong> · <strong>전 소모품(포셉 등) 1회용 사용 및 즉시 폐기</strong> · 1:1 고수준 멸균 소독
                   </td>
                 </tr>
-                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>초음파 진단 장비</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                <tr>
+                  <td className="spec-td-label">초음파 진단 장비</td>
+                  <td className="spec-td-val">
                     <strong>GE LOGIQ P9 (GE 헬스케어)</strong> 정밀 초음파 진단기 (복부·간·담낭·췌장·신장·갑상선·경동맥·심장초음파)
                   </td>
                 </tr>
-                <tr style={{ borderBottom: '1px solid var(--border-color)', background: '#FAFAFA' }}>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>원내 CT 및 정밀 암검진 장비</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                <tr className="alt-row">
+                  <td className="spec-td-label">원내 CT 및 정밀 암검진 장비</td>
+                  <td className="spec-td-val">
                     <strong>캐논(Canon) Aquilion TSX-037A 저선량 멀티슬라이스 CT 원내 보유</strong> · 유방촬영기(<strong>Genoray MX-600</strong>) · 골밀도(<strong>Osteopro Grand MINI DEXA</strong>) · 디지털 X-ray(<strong>EXSYS plus</strong>) · 24시간 심전도 홀터검사
                   </td>
                 </tr>
-                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>건강검진 프로그램 및 검사 동선</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                <tr>
+                  <td className="spec-td-label">건강검진 프로그램 및 검사 동선</td>
+                  <td className="spec-td-val">
                     <strong>개인·가족 맞춤 종합건강검진 + 공단 일반검진 + 6대암 국가검진 전 항목</strong> · 로뎀타워 5층 단일 층 원스톱(One-Stop) 검진 동선 및 고혈압·당뇨·고지혈증 만성질환 주치의 연계
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ padding: '0.65rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>아라역 접근성 및 주차·토요진료</td>
-                  <td style={{ padding: '0.65rem 1rem', color: 'var(--text-secondary)' }}>
+                  <td className="spec-td-label">아라역 접근성 및 주차·토요진료</td>
+                  <td className="spec-td-val">
                     <strong>인천 1호선 아라역 바로 앞 도보 1~2분 초역세권</strong> (인천 검단구 이음대로 378 로뎀타워 5층, 아라동) · 지하주차장 무료 · 토요일 점심시간 없이 08:30~13:00 검진·내시경 시행
                   </td>
                 </tr>
@@ -267,36 +241,18 @@ export default function HomePage() {
           </div>
 
           {/* 3대 핵심 클리닉 전용 안내 페이지 바로가기 */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.75rem',
-              flexWrap: 'wrap',
-              marginTop: '1.25rem',
-              paddingTop: '1.1rem',
-              borderTop: '1px solid var(--border-color)',
-            }}
-          >
-            <Link
-              href="/health-checkup"
-              className="cluster-btn active"
-              style={{ textDecoration: 'none', fontWeight: 700 }}
-            >
-              🏥 국가건강검진·6대암·종합검진 상세 안내 →
+          <div className="clinic-quick-links">
+            <Link href="/health-checkup" className="clinic-quick-btn primary">
+              <span>🏥 국가건강검진·6대암·종합검진 상세 안내</span>
+              <span>→</span>
             </Link>
-            <Link
-              href="/colonoscopy"
-              className="cluster-btn"
-              style={{ textDecoration: 'none', fontWeight: 700, borderColor: 'var(--primary)', color: 'var(--primary)' }}
-            >
-              🔬 검단 대장·위내시경 클리닉 (당일 용종절제·CO₂ 송기) →
+            <Link href="/colonoscopy" className="clinic-quick-btn outline">
+              <span>🔬 검단 대장·위내시경 클리닉 (당일 용종절제·CO₂ 송기)</span>
+              <span>→</span>
             </Link>
-            <Link
-              href="/digestive-clinic"
-              className="cluster-btn"
-              style={{ textDecoration: 'none', fontWeight: 700 }}
-            >
-              🩺 역류성식도염·속쓰림·소화불량·위염·헬리코박터 클리닉 →
+            <Link href="/digestive-clinic" className="clinic-quick-btn default">
+              <span>🩺 역류성식도염·속쓰림·소화불량·위염·헬리코박터 클리닉</span>
+              <span>→</span>
             </Link>
           </div>
         </div>
